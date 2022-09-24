@@ -1,7 +1,5 @@
 # Getting Started
 
-## Available Scripts
-
 In the project directory, to install the packages run:
 
 ### `yarn install`
