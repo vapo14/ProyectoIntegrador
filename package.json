@@ -61,6 +61,7 @@
       "node_modules/**/*",
       "electron/**/*"
     ],
+    "extends": null,
     "directories": {
       "buildResources": "public"
     },
