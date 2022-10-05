@@ -1,7 +1,9 @@
+const GeneratePassword = require("./security/generatePassword")
 // Module to control the application lifecycle and the native browser window.
 const { app, BrowserWindow, protocol } = require("electron");
 const path = require("path");
 const url = require("url");
+
 
 // Create the native browser window.
 function createWindow() {
