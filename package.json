@@ -13,6 +13,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "sqlite3": "^5.1.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -50,6 +51,7 @@
     "cross-env": "^7.0.3",
     "electron": "^20.2.0",
     "electron-builder": "^23.3.3",
+    "electron-rebuild": "^3.2.9",
     "electronmon": "^2.0.2",
     "wait-on": "^6.0.1"
   },

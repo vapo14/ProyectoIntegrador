@@ -17,3 +17,12 @@ You may also see any lint errors in the console.
 To build the project, you can do so, with the following platforms, mac, win and linux:
 
 ### `yarn electron:package:<platform>` 
+
+To rebuild sqlite3 with the current OS :
+
+### `./node_modules/.bin/electron-rebuild  -f -w sqlite3`
+
+To start the database :
+
+### `node initial_database_creation.js`
+
