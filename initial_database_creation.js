@@ -2,6 +2,8 @@ const AppDAO = require('./DAO/dao')
 const RolesRepository = require("./DAO/roles_repository")
 const UserRepository = require("./DAO/user_repository")
 const UserRolesRepository = require("./DAO/user_roles_repository")
+const ReservationRepository = require("./DAO/reservation_repository")
+const GuestRepository = require("./DAO/guest_repository")
 
 const GeneratePassword = require("./electron/security/generatePassword")
 
@@ -13,8 +15,12 @@ const superUser = { username: 'superuser', full_name: 'Super User', password_has
 const userRepository = new UserRepository(dao)
 const rolesRepository = new RolesRepository(dao)
 const userRolesRepository = new UserRolesRepository(dao)
+const guestRepository = new GuestRepository(dao)
+const reservation_repository = new ReservationRepository(dao)
 
 userRepository.createTable()
+guestRepository.createTable()
+reservation_repository.createTable()
 userRolesRepository.createTable()
 .then(() => userRepository.create(superUser.username, superUser.full_name, superUser.password_hash, superUser.password_salt))
 .then(() => rolesRepository.createTable())
