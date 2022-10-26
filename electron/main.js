@@ -7,8 +7,11 @@ const { ipcMain } = require("electron");
 
 const AppDAO = require("../dao/dao");
 const ReservationRepository = require("../dao/reservation_repository");
+const GuestRepository = require("../DAO/guest_repository")
+
 
 const appDao = new AppDAO("./database.sqlite3");
+const guestRepo = new GuestRepository(appDao);
 const reservationRepo = new ReservationRepository(appDao);
 
 ipcMain.on("reservation", async (event, arg) => {
@@ -64,6 +67,19 @@ function createWindow() {
     mainWindow.webContents.openDevTools();
   }
 }
+
+ipcMain.on('guest', async (event, arg) => {
+  const payload = arg;
+  let response;
+  switch (payload.action) {
+    case 'GET_BY_ID':
+      response = await guestRepo.getById(payload.guest_id);
+      break;
+    default:
+      break;
+  }
+  event.reply('guest-reply', response);
+});
 
 // Setup a local proxy to adjust the paths of requested files when loading
 // them from the local production bundle (e.g.: local fonts, etc...).

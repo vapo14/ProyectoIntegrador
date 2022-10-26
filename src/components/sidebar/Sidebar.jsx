@@ -1,8 +1,12 @@
 import "./sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
+import { Button } from '@mui/material';
+import { useNavigate } from "react-router-dom";
+
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   return (
     <div className="sidebar">
       <div className="top">
@@ -12,13 +16,16 @@ const Sidebar = () => {
       <div className="center">
         <ul>
           <li>
-            <DashboardIcon />
-            <span>Dashboard</span>
+           
+            <Button style={{color: "black", width: "100%"}}   onClick={() => navigate("/dashboard") }>
+            <DashboardIcon/>
+            Dashboard
+            </Button>
+    
           </li>
           <li>
             <span>Register Usuario</span>
           </li>
-          <Link to={"/calendar"}>link</Link>
         </ul>
       </div>
       <div className="bottom"></div>

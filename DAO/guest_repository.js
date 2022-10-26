@@ -31,7 +31,7 @@ class GuestRepository {
         )
     }
 
-    getById(guest_id) {
+    async getById(guest_id) {
         return this.dao.get(
             `SELECT * FROM Guest WHERE guest_id = ?`,
             [guest_id]
