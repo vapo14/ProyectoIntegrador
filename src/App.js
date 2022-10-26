@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Register from './pages/register/Register';
 import Dashboard from './pages/dashboard/Dashboard';
 import CreateRoom from './pages/room/CreateRoom';
+import BookingCalendar from './pages/bookingCalendar/BookingCalendar';
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
 
             <Route index element={<CreateRoom />} />
             <Route path="crearHabitacion" element={<CreateRoom />} />
+
+            <Route element={<BookingCalendar />} />
+            <Route path="calendar" element={<BookingCalendar />} />
           </Route>
         </Routes>
       </BrowserRouter>
