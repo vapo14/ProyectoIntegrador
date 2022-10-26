@@ -88,6 +88,7 @@ class ReservationRepository {
   generate_column_update_query(update_object) {
     let columns_values = "";
     for (let key in update_object) {
+      if (key === "reservation_id") continue;
       if (typeof update_object[key] === "string") {
         columns_values += key + " = " + "'" + update_object[key] + "'" + ",";
       } else {

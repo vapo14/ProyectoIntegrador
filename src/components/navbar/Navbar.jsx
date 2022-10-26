@@ -1,9 +1,7 @@
-import './navbar.scss'
+import "./navbar.scss";
 
 const Navbar = () => {
-    return (
-        <div className='navbar'>Navbar</div>
-    )
-}
+  return <div className="navbar">Navbar</div>;
+};
 
-export default Navbar
+export default Navbar;
