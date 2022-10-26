@@ -11,14 +11,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
+            <Route index element={<CreateRoom />} />
+            <Route path="crearHabitacion" element={<CreateRoom />} />
+
             <Route index element={<Register />} />
             <Route path="register" element={<Register />} />
 
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
-
-            <Route index element={<CreateRoom />} />
-            <Route path="crearHabitacion" element={<CreateRoom />} />
 
             <Route element={<BookingCalendar />} />
             <Route path="calendar" element={<BookingCalendar />} />
