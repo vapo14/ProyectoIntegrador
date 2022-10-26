@@ -4,11 +4,11 @@ import Navbar from "../../components/navbar/Navbar";
 import "./register.scss";
 
 const Register = () => {
-    const [fullname, setFullname] = useState(null);
-    const [username, setUsername] = useState(null);
-    const [password, setPassword] = useState(null);
-    const [confirmPassword, setConfirmPassword] = useState(null);
-    const [userRole, setUserRole] = useState(null);
+    const [fullname, setFullname] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [userRole, setUserRole] = useState("Administrador");
 
     const handleInputChange = (e) => {
         const {id, value} = e.target;
@@ -32,6 +32,10 @@ const Register = () => {
             setUserRole(value);
         }
 
+    }
+
+    const handleSubmit = () => {
+        console.log(fullname, username, password, confirmPassword, userRole);
     }
 
     return (
@@ -68,7 +72,7 @@ const Register = () => {
                                     <option value="User">Usuario</option>
                                 </select>
                             </div>
-                            <button>Registrar</button>
+                            <button onClick={() => handleSubmit()} type="submit" >Registrar</button>
                         </form>
                     </div>
                 </div>
