@@ -1,11 +1,8 @@
-import Home from "./pages/home/Home";
-import {
-  BrowserRouter,
-  Routes,
-  Route
-} from "react-router-dom"
-import Register from "./pages/register/Register";
-import Dashboard from "./pages/dashboard/Dashboard";
+import Home from './pages/home/Home';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Register from './pages/register/Register';
+import Dashboard from './pages/dashboard/Dashboard';
+import CreateRoom from './pages/room/CreateRoom';
 
 function App() {
   return (
@@ -19,6 +16,8 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
 
+            <Route index element={<CreateRoom />} />
+            <Route path="crearHabitacion" element={<CreateRoom />} />
           </Route>
         </Routes>
       </BrowserRouter>
