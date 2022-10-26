@@ -5,8 +5,8 @@ const path = require("path");
 const url = require("url");
 const { ipcMain } = require("electron");
 
-const AppDAO = require("../dao/dao");
-const ReservationRepository = require("../dao/reservation_repository");
+const AppDAO = require("../DAO/dao");
+const ReservationRepository = require("../DAO/reservation_repository");
 
 const appDao = new AppDAO("./database.sqlite3");
 const reservationRepo = new ReservationRepository(appDao);
