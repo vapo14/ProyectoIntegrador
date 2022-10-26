@@ -13,6 +13,7 @@ class AppDAO {
 
   run(sql, params = []) {
     return new Promise((resolve, reject) => {
+      console.log("SQL: ", sql, params);
       this.db.run(sql, params, function (err) {
         if (err) {
           console.log("Error running sql" + sql);
