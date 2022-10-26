@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import Sidebar from '../../components/sidebar/Sidebar';
+import send from '../../util/message-emitter';
 import './createRoom.scss';
 
 const CreateRoom = () => {
@@ -9,47 +10,51 @@ const CreateRoom = () => {
   const priceRef = useRef();
   const jacuzziRef = useRef();
 
-  const handleSubmit = () => {
-    // TODO: Handle Room creation in database
-    console.table([
+  const handleSubmit = async () => {
+    const room = [
       roomNumRef.current.value,
       bedAmountRef.current.value,
-      bedTypeRef.current.value,
       priceRef.current.value,
       jacuzziRef.current.checked,
-    ]);
+    ];
+    console.table([...room]);
+
+    let res = await send({ action: 'CREATE', room }, 'room');
+
+    if (!res) alert('No se pudo crear la habitación...');
+    else clearInputs();
+  };
+
+  const clearInputs = () => {
+    roomNumRef.current.value = '';
+    bedAmountRef.current.value = '';
+    priceRef.current.value = '';
+    jacuzziRef.current.checked = false;
+
+    alert('La habitación fue creada con éxito.');
   };
 
   return (
     <div className="createRoom">
       <Sidebar />
       <div className="createRoomContainer">
-        <h1 className="title">Crear Habitacion</h1>
+        <h1 className="title">Crear Habitación</h1>
 
         <label className="label" htmlFor="roomNum">
-          Numero de Habitacion
+          Numero de Habitación
         </label>
         <input ref={roomNumRef} type="number" name="roomNum" id="roomNum" />
 
         <label className="label" htmlFor="bedAmount">
-          Cantidad de Camas
+          Cantidad y Tipo de Camas
         </label>
         <input
           ref={bedAmountRef}
-          type="number"
+          type="text"
+          placeholder="Ej: 2M (2 matrimoniales)"
           name="bedAmount"
           id="bedAmount"
         />
-
-        <label className="label" htmlFor="bedType">
-          Tipo de Camas
-        </label>
-        <select name="bedType" id="bedType" ref={bedTypeRef}>
-          <option value="individual">Individual</option>
-          <option value="matrimonial">Matrimonial</option>
-          <option value="queen">Queen</option>
-          <option value="king">King</option>
-        </select>
 
         <div className="masked-input-container">
           <label className="label" htmlFor="price">
@@ -63,7 +68,7 @@ const CreateRoom = () => {
         <label htmlFor="jacuzzi">Tiene Jacuzzi</label>
 
         <button className="submit-button" onClick={handleSubmit}>
-          Crear Habitacion
+          Crear Habitación
         </button>
       </div>
     </div>
