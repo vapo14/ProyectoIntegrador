@@ -1,6 +1,6 @@
-import "./sidebar.scss";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import { Link } from "react-router-dom";
+import './sidebar.scss';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   return (
@@ -18,7 +18,8 @@ const Sidebar = () => {
           <li>
             <span>Register Usuario</span>
           </li>
-          <Link to={"/calendar"}>link</Link>
+          <Link to={'/calendar'}>link</Link>
+          <Link to={'/crearHabitacion'}>Crear Habitacion</Link>
         </ul>
       </div>
       <div className="bottom"></div>
