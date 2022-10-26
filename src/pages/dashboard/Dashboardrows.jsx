@@ -61,6 +61,12 @@ const columns = [
     format: (value) => value.toFixed(2),
   },
 
+  {
+    id: 'origin',
+    label: 'Origen',
+    format: (value) => value.toFixed(2),
+  },
+
 ];
 
 /*
@@ -96,8 +102,9 @@ export default function StickyHeadTable() {
     for (let key in all) {
       let reservation = all[key];
       //console.log("etesech",reservation);
-      let guest = await send({ action: "GET_BY_ID", guest_id: reservation["guest_id"] }, "guest");
+      let guest = await send({ action: "GET_BY_ID", guest_id: reservation["guest_id"]}, "guest");
       reservation.full_name = guest.full_name;
+      reservation.origin = guest.origin;
       }
       setRows(all);
   };
