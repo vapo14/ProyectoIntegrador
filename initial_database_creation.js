@@ -1,9 +1,9 @@
-const AppDAO = require('./dao/dao');
-const RolesRepository = require('./dao/roles_repository');
-const UserRepository = require('./dao/user_repository');
-const UserRolesRepository = require('./dao/user_roles_repository');
-const ReservationRepository = require('./dao/reservation_repository');
-const GuestRepository = require('./dao/guest_repository');
+const AppDAO = require('./DAO/dao');
+const RolesRepository = require('./DAO/roles_repository');
+const UserRepository = require('./DAO/user_repository');
+const UserRolesRepository = require('./DAO/user_roles_repository');
+const ReservationRepository = require('./DAO/reservation_repository');
+const GuestRepository = require('./DAO/guest_repository');
 const RoomRepository = require('./DAO/room_repository');
 const RoomReservedRepository = require('./DAO/room_reserved_repository');
 
