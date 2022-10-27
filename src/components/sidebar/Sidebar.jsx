@@ -1,9 +1,8 @@
-import "./sidebar.scss";
-import DashboardIcon from "@mui/icons-material/Dashboard";
+import './sidebar.scss';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 //import { Link } from "react-router-dom";
 import { Button } from '@mui/material';
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -16,15 +15,32 @@ const Sidebar = () => {
       <div className="center">
         <ul>
           <li>
-           
-            <Button style={{color: "black", width: "100%"}}   onClick={() => navigate("/dashboard") }>
-            <DashboardIcon/>
-            Dashboard
+            <Button
+              style={{ color: 'black', width: '100%' }}
+              onClick={() => navigate('/dashboard')}
+            >
+              <DashboardIcon />
+              Dashboard
             </Button>
-    
           </li>
           <li>
             <span>Register Usuario</span>
+          </li>
+          <li>
+            <Button
+              style={{ color: 'black', width: '100%' }}
+              onClick={() => navigate('/calendar')}
+            >
+              Calendario
+            </Button>
+          </li>
+          <li>
+            <Button
+              style={{ color: 'black', width: '100%' }}
+              onClick={() => navigate('/crearHabitacion')}
+            >
+              Crear Habitacion
+            </Button>
           </li>
         </ul>
       </div>

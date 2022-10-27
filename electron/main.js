@@ -1,39 +1,55 @@
-const GeneratePassword = require("./security/generatePassword");
+const GeneratePassword = require('./security/generatePassword');
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, protocol } = require("electron");
-const path = require("path");
-const url = require("url");
-const { ipcMain } = require("electron");
+const { app, BrowserWindow, protocol } = require('electron');
+const path = require('path');
+const url = require('url');
+const { ipcMain } = require('electron');
 
-const AppDAO = require("../dao/dao");
-const ReservationRepository = require("../dao/reservation_repository");
-const GuestRepository = require("../DAO/guest_repository")
+const AppDAO = require('../dao/dao');
+const ReservationRepository = require('../dao/reservation_repository');
+const RoomsRepository = require('../DAO/room_repository');
+const GuestRepository = require('../DAO/guest_repository');
 
-
-const appDao = new AppDAO("./database.sqlite3");
+const appDao = new AppDAO('./database.sqlite3');
 const guestRepo = new GuestRepository(appDao);
 const reservationRepo = new ReservationRepository(appDao);
+const roomRepo = new RoomsRepository(appDao);
 
-ipcMain.on("reservation", async (event, arg) => {
+ipcMain.on('reservation', async (event, arg) => {
   const payload = arg;
   let response;
   switch (payload.action) {
-    case "UPDATE":
+    case 'UPDATE':
       response = await reservationRepo.update(
         payload.reservation.reservation_id,
         payload.reservation
       );
-    case "GET_ALL":
+      break;
+    case 'GET_ALL':
       response = await reservationRepo.getAll();
       break;
-    case "GET_BY_ID":
+    case 'GET_BY_ID':
       response = await reservationRepo.getById(payload.reservation_id);
       break;
     default:
       break;
   }
 
-  event.reply("reservation-reply", response);
+  event.reply('reservation-reply', response);
+});
+
+ipcMain.on('room', async (event, arg) => {
+  const payload = arg;
+  let response;
+  switch (payload.action) {
+    case 'CREATE':
+      response = await roomRepo.create(...payload.room);
+      break;
+    default:
+      break;
+  }
+
+  event.reply('room-reply', response);
 });
 
 // Create the native browser window.
@@ -44,7 +60,7 @@ function createWindow() {
     // Set the path of an additional "preload" script that can be used to
     // communicate between node-land and browser-land.
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
       contextIsolation: false,
     },
@@ -55,11 +71,11 @@ function createWindow() {
   // In development, set it to localhost to allow live/hot-reloading.
   const appURL = app.isPackaged
     ? url.format({
-        pathname: path.join(__dirname, "index.html"),
-        protocol: "file:",
+        pathname: path.join(__dirname, 'index.html'),
+        protocol: 'file:',
         slashes: true,
       })
-    : "http://localhost:3000";
+    : 'http://localhost:3000';
   mainWindow.loadURL(appURL);
 
   // Automatically open Chrome's DevTools in development mode.
@@ -85,13 +101,13 @@ ipcMain.on('guest', async (event, arg) => {
 // them from the local production bundle (e.g.: local fonts, etc...).
 function setupLocalFilesNormalizerProxy() {
   protocol.registerHttpProtocol(
-    "file",
+    'file',
     (request, callback) => {
       const url = request.url.substr(8);
       callback({ path: path.normalize(`${__dirname}/${url}`) });
     },
     (error) => {
-      if (error) console.error("Failed to register protocol");
+      if (error) console.error('Failed to register protocol');
     }
   );
 }
@@ -103,7 +119,7 @@ app.whenReady().then(() => {
   createWindow();
   setupLocalFilesNormalizerProxy();
 
-  app.on("activate", function () {
+  app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -115,8 +131,8 @@ app.whenReady().then(() => {
 // Quit when all windows are closed, except on macOS.
 // There, it's common for applications and their menu bar to stay active until
 // the user quits  explicitly with Cmd + Q.
-app.on("window-all-closed", function () {
-  if (process.platform !== "darwin") {
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') {
     app.quit();
   }
 });
@@ -124,9 +140,9 @@ app.on("window-all-closed", function () {
 // If your app has no need to navigate or only needs to navigate to known pages,
 // it is a good idea to limit navigation outright to that known scope,
 // disallowing any other kinds of navigation.
-const allowedNavigationDestinations = "https://my-electron-app.com";
-app.on("web-contents-created", (event, contents) => {
-  contents.on("will-navigate", (event, navigationUrl) => {
+const allowedNavigationDestinations = 'https://my-electron-app.com';
+app.on('web-contents-created', (event, contents) => {
+  contents.on('will-navigate', (event, navigationUrl) => {
     const parsedUrl = new URL(navigationUrl);
 
     if (!allowedNavigationDestinations.includes(parsedUrl.origin)) {

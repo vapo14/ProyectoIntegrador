@@ -1,8 +1,9 @@
-import Home from "./pages/home/Home";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Register from "./pages/register/Register";
-import Dashboard from "./pages/dashboard/Dashboard";
-import BookingCalendar from "./pages/bookingCalendar/BookingCalendar";
+import Home from './pages/home/Home';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Register from './pages/register/Register';
+import Dashboard from './pages/dashboard/Dashboard';
+import CreateRoom from './pages/room/CreateRoom';
+import BookingCalendar from './pages/bookingCalendar/BookingCalendar';
 
 function App() {
   return (
@@ -10,6 +11,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
+            <Route index element={<CreateRoom />} />
+            <Route path="crearHabitacion" element={<CreateRoom />} />
+
             <Route index element={<Register />} />
             <Route path="register" element={<Register />} />
 
