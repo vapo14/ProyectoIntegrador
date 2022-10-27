@@ -26,3 +26,5 @@ yarn-error.log*
 # database
 
 database.sqlite3
+
+.vscode

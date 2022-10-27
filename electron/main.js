@@ -1,9 +1,37 @@
-const GeneratePassword = require("./security/generatePassword")
+const GeneratePassword = require("./security/generatePassword");
 // Module to control the application lifecycle and the native browser window.
 const { app, BrowserWindow, protocol } = require("electron");
 const path = require("path");
 const url = require("url");
+const { ipcMain } = require("electron");
 
+const AppDAO = require("../dao/dao");
+const ReservationRepository = require("../dao/reservation_repository");
+
+const appDao = new AppDAO("./database.sqlite3");
+const reservationRepo = new ReservationRepository(appDao);
+
+ipcMain.on("reservation", async (event, arg) => {
+  const payload = arg;
+  let response;
+  switch (payload.action) {
+    case "UPDATE":
+      response = await reservationRepo.update(
+        payload.reservation.reservation_id,
+        payload.reservation
+      );
+    case "GET_ALL":
+      response = await reservationRepo.getAll();
+      break;
+    case "GET_BY_ID":
+      response = await reservationRepo.getById(payload.reservation_id);
+      break;
+    default:
+      break;
+  }
+
+  event.reply("reservation-reply", response);
+});
 
 // Create the native browser window.
 function createWindow() {
@@ -14,6 +42,8 @@ function createWindow() {
     // communicate between node-land and browser-land.
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
