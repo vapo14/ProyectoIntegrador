@@ -1,31 +1,20 @@
-<<<<<<< HEAD
-const GeneratePassword = require("./security/generatePassword");
-=======
->>>>>>> 2988dc7d12151d05a9ee87a3c6bfc32ed9634894
 // Module to control the application lifecycle and the native browser window.
 const { app, BrowserWindow, protocol } = require("electron");
 const path = require("path");
 const url = require("url");
 const { ipcMain } = require("electron");
 
-<<<<<<< HEAD
-const AppDAO = require("../DAO/dao");
-const ReservationRepository = require("../DAO/reservation_repository");
 const RoomsRepository = require("../DAO/room_repository");
+const RoomsReservedRepository = require("../DAO/room_reserved_repository");
 const GuestRepository = require("../DAO/guest_repository");
-=======
-const RoomsRepository = require('../DAO/room_repository');
-const RoomsReservedRepository = require('../DAO/room_reserved_repository')
-const GuestRepository = require('../DAO/guest_repository');
 const AppDAO = require("../DAO/dao");
 const ReservationRepository = require("../DAO/reservation_repository");
 const UserRepository = require("../DAO/user_repository");
 const UserRolesRepository = require("../DAO/user_roles_repository");
->>>>>>> 2988dc7d12151d05a9ee87a3c6bfc32ed9634894
 
 const appDao = new AppDAO("./database.sqlite3");
 const guestRepo = new GuestRepository(appDao);
-const roomsReservedRepo = new RoomsReservedRepository(appDao); 
+const roomsReservedRepo = new RoomsReservedRepository(appDao);
 const reservationRepo = new ReservationRepository(appDao);
 const roomRepo = new RoomsRepository(appDao);
 const userRepo = new UserRepository(appDao);
@@ -66,35 +55,28 @@ ipcMain.on("room", async (event, arg) => {
     case "CREATE":
       response = await roomRepo.create(...payload.room);
       break;
-<<<<<<< HEAD
     case "GET_ALL":
       response = await roomRepo.getAll();
-=======
-    case 'GET_BY_ID':
+    case "GET_BY_ID":
       response = await roomRepo.getById(payload.room_id);
->>>>>>> 2988dc7d12151d05a9ee87a3c6bfc32ed9634894
       break;
     default:
       break;
   }
-<<<<<<< HEAD
-
   event.reply("room-reply", response);
-=======
-  event.reply('room-reply', response);
->>>>>>> 2988dc7d12151d05a9ee87a3c6bfc32ed9634894
 });
 
-
-ipcMain.on('roomreserved', async (event, arg) => {
+ipcMain.on("roomreserved", async (event, arg) => {
   const payload = arg;
   let response;
   console.log(payload);
   switch (payload.action) {
-    case 'GET_BY_RESERVATION_ID':
-      response = await roomsReservedRepo.getByReservationId(payload.reservation_id);
-      console.log(response);
-
+    case "GET_BY_RESERVATION_ID":
+      response = await roomsReservedRepo.getByReservationId(
+        payload.reservation_id
+      );
+  }
+});
 
 ipcMain.on("user", async (event, arg) => {
   const payload = arg;
@@ -103,9 +85,7 @@ ipcMain.on("user", async (event, arg) => {
     case "CREATE":
       response = await userRepo.create(...payload.user);
     case "GET_BY_USERNAME":
-      response = await userRepo.getByUsername(
-        payload.username
-      );
+      response = await userRepo.getByUsername(payload.username);
 
       console.log("Response :", response);
 
@@ -113,10 +93,6 @@ ipcMain.on("user", async (event, arg) => {
     default:
       break;
   }
-
-  event.reply('roomreserved-reply', response);
-
-
   event.reply("user-reply", response);
 });
 
@@ -132,7 +108,6 @@ ipcMain.on("userRole", async (event, arg) => {
   }
 
   event.reply("user-reply", response);
-
 });
 
 // Create the native browser window.
