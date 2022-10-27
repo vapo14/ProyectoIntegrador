@@ -36,12 +36,17 @@ ipcMain.on("reservation", async (event, arg) => {
   event.reply("reservation-reply", response);
 });
 
+
 ipcMain.on("user", async (event, arg) => {
   const payload = arg;
   let response;
   switch (payload.action) {
     case "CREATE":
       response = await userRepo.create(...payload.user);
+    case "GET_BY_USERNAME":
+      response = await userRepo.getByUsername(
+        payload.username
+      );
       break;
     default:
       break;
