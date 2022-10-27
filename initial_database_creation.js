@@ -21,12 +21,11 @@ const dao = new AppDAO("./database.sqlite3");
 var password = "password123";
 var salt = GetRandomString(20);
 var passwordObj = bcrypt.hashSync(password + salt)
-
 const superUser = {
   username: "superuser",
   full_name: "Super User",
-  password_hash: passwordObj.hash_password,
-  password_salt: passwordObj.salt,
+  password_hash: passwordObj,
+  password_salt: salt,
 };
 const userRepository = new UserRepository(dao);
 const rolesRepository = new RolesRepository(dao);
