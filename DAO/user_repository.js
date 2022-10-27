@@ -39,6 +39,13 @@ class UserRepository {
         )
     }
 
+    async getByUsername(username) {
+        return this.dao.get(
+            `SELECT * FROM User WHERE username = ?`,
+            [username]
+        )
+    }
+
     getAll() {
         return this.dao.all(`SELECT * FROM User`)
     }
