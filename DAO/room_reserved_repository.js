@@ -1,3 +1,5 @@
+const { Sync } = require("@mui/icons-material");
+
 class RoomReservedRepository {
   constructor(dao) {
     this.dao = dao;
@@ -35,6 +37,13 @@ class RoomReservedRepository {
 
   getById(id) {
     return this.dao.get(`SELECT * FROM RoomReserved WHERE id = ?`, [id]);
+  }
+
+  async getByReservationId(reservation_id) {
+    return await this.dao.all(
+      `SELECT * FROM RoomReserved WHERE reservation_id = ?`,
+      [reservation_id]
+    );
   }
 
   getAll() {

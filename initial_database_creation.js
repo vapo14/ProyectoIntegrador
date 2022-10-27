@@ -6,18 +6,29 @@ const ReservationRepository = require("./DAO/reservation_repository");
 const GuestRepository = require("./DAO/guest_repository");
 const RoomRepository = require("./DAO/room_repository");
 const RoomReservedRepository = require("./DAO/room_reserved_repository");
+const bcrypt = require("bcryptjs");
 
-const GeneratePassword = require("./electron/security/generatePassword");
+const GetRandomString = (length) => {
+  var result = "";
+  var characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+
+  return result;
+};
 
 const dao = new AppDAO("./database.sqlite3");
 var password = "password123";
-var passwordObj = GeneratePassword(password);
-
+var salt = GetRandomString(20);
+var passwordObj = bcrypt.hashSync(password + salt);
 const superUser = {
   username: "superuser",
   full_name: "Super User",
-  password_hash: passwordObj.hash_password,
-  password_salt: passwordObj.salt,
+  password_hash: passwordObj,
+  password_salt: salt,
 };
 const userRepository = new UserRepository(dao);
 const rolesRepository = new RolesRepository(dao);
