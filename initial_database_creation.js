@@ -1,10 +1,14 @@
+
+const AppDAO = require('./DAO/dao');
+const RolesRepository = require('./DAO/roles_repository');
+const UserRepository = require('./DAO/user_repository');
+const UserRolesRepository = require('./DAO/user_roles_repository');
+const ReservationRepository = require('./DAO/reservation_repository');
+const GuestRepository = require('./DAO/guest_repository');
+const RoomRepository = require('./DAO/room_repository');
+const RoomReservedRepository = require('./DAO/room_reserved_repository');
 const bcrypt = require('bcryptjs')
-const AppDAO = require("./DAO/dao");
-const RolesRepository = require("./DAO/roles_repository");
-const UserRepository = require("./DAO/user_repository");
-const UserRolesRepository = require("./DAO/user_roles_repository");
-const ReservationRepository = require("./DAO/reservation_repository");
-const GuestRepository = require("./DAO/guest_repository");
+
 
 const GetRandomString = (length) => {
   var result = '';

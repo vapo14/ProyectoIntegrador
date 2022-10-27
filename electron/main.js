@@ -5,6 +5,7 @@ const url = require('url');
 const { ipcMain } = require('electron');
 
 const RoomsRepository = require('../DAO/room_repository');
+const RoomsReservedRepository = require('../DAO/room_reserved_repository')
 const GuestRepository = require('../DAO/guest_repository');
 const AppDAO = require("../DAO/dao");
 const ReservationRepository = require("../DAO/reservation_repository");
@@ -13,6 +14,7 @@ const UserRolesRepository = require("../DAO/user_roles_repository");
 
 const appDao = new AppDAO('./database.sqlite3');
 const guestRepo = new GuestRepository(appDao);
+const roomsReservedRepo = new RoomsReservedRepository(appDao); 
 const reservationRepo = new ReservationRepository(appDao);
 const roomRepo = new RoomsRepository(appDao);
 const userRepo = new UserRepository(appDao);
@@ -48,12 +50,24 @@ ipcMain.on('room', async (event, arg) => {
     case 'CREATE':
       response = await roomRepo.create(...payload.room);
       break;
+    case 'GET_BY_ID':
+      response = await roomRepo.getById(payload.room_id);
+      break;
     default:
       break;
   }
-
   event.reply('room-reply', response);
 });
+
+
+ipcMain.on('roomreserved', async (event, arg) => {
+  const payload = arg;
+  let response;
+  console.log(payload);
+  switch (payload.action) {
+    case 'GET_BY_RESERVATION_ID':
+      response = await roomsReservedRepo.getByReservationId(payload.reservation_id);
+      console.log(response);
 
 
 ipcMain.on("user", async (event, arg) => {
@@ -68,10 +82,14 @@ ipcMain.on("user", async (event, arg) => {
       );
 
       console.log("Response :", response);
+
       break;
     default:
       break;
   }
+
+  event.reply('roomreserved-reply', response);
+
 
   event.reply("user-reply", response);
 });
@@ -88,6 +106,7 @@ ipcMain.on("userRole", async (event, arg) => {
   }
 
   event.reply("user-reply", response);
+
 });
 
 // Create the native browser window.

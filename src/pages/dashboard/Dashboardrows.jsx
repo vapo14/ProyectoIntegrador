@@ -12,11 +12,11 @@ import React, { useEffect, useState } from "react";
 import send from "../../util/message-emitter";
 
 const columns = [
-  { id: 'guest_id', label: 'Folio_Invitado'},
-  { id: 'user_id', label: 'Folio_Usuario'},
+  { id: 'guest_id', label: 'Folio_Invitado' },
+  { id: 'user_id', label: 'Folio_Usuario' },
 
-  { id: 'start_date', label: 'Check-In'},
-  { id: 'full_name', label: 'Nombre'},
+  { id: 'start_date', label: 'Check-In' },
+  { id: 'full_name', label: 'Nombre' },
   {
     id: 'end_date',
     label: 'Check-out',
@@ -67,25 +67,19 @@ const columns = [
     format: (value) => value.toFixed(2),
   },
 
+  {
+    id: 'room_number',
+    label: 'Habitaciones',
+    format: (value) => value.toFixed(2),
+  },
+
 ];
-
-/*
-function createData(guestid, userid, checkin, checkout, tscreated, tsupdated, preciototal, formofbooking, nombredecompania, numadultos, numninios, paymentdate) {
-  return {guestid, userid, checkin, checkout, tscreated, tsupdated, preciototal, formofbooking, nombredecompania, numadultos, numninios, paymentdate};
-}
-
-const rows = [
-  createData('1', '21/10/2022','25/10/2022', 'Marco','Towers','@towers', '614--', 'Sencillo', '2', '2200'),
-  createData('2', '22/10/2022','26/10/2022', 'Victor','Patreon','@patreon','614--', 'Sencillo', '2', '2200'),
-  createData('3', '23/10/2022','27/10/2022', 'Eduardo','Almencho','@almencho', '614--', 'Sencillo', '2', '2200'),
-  createData('4', '24/10/2022','28/10/2022', 'Javier','Chocha','@chocha', '614--', 'Sencillo', '2', '2200'),
-];*/
 
 export default function StickyHeadTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -95,44 +89,76 @@ export default function StickyHeadTable() {
     setPage(0);
   };
 
+
+  function createData(guest_id, user_id, start_date, full_name, end_date, ts_created,ts_updated,total_price,form_of_booking,company_name,number_of_adults, number_of_children, payment_date,origin, room_number ) {
+
+    return { guest_id, user_id, start_date, full_name, end_date, ts_created,ts_updated,total_price,form_of_booking,company_name,number_of_adults, number_of_children, payment_date,origin, room_number};
+  }
+  
+  const rows = [
+    createData('1', '1', "02-10-2022", "Sebas S", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "32"),
+    createData('2', '2', "02-10-2022", "Victor P", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "10"),
+    createData('3', '3', "02-10-2022", "Eduardo A", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "3"),
+    createData('4', '4', "02-10-2022", "Cesar M", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "2"),
+    createData('5', '5', "02-10-2022", "Javier Sosa", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "5"),
+    createData('6', '6', "02-10-2022", "Sebas S", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "36"),
+    createData('7', '7', "02-10-2022", "Victor P", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "52"),
+    createData('8', '8', "02-10-2022", "Eduardo A", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "6"),
+    createData('9', '9', "02-10-2022", "Cesar M", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "22"),
+    createData('10', '10', "02-10-2022", "Javier Sosa", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "32"),
+  ];
+  
+/*
   const [Rows, setRows] = useState([]);
+
   const getAllReservations = async () => {
     let all = await send({ action: "GET_ALL" }, "reservation");
-    console.log(all);
+    //console.log(all);
     for (let key in all) {
       let reservation = all[key];
-      //console.log("etesech",reservation);
-      let guest = await send({ action: "GET_BY_ID", guest_id: reservation["guest_id"]}, "guest");
+      let guest = await send({ action: "GET_BY_ID", guest_id: reservation["guest_id"] }, "guest");
       reservation.full_name = guest.full_name;
       reservation.origin = guest.origin;
+      
+      reservation.rooms_number = [];
+      let roomsreservation = await send({ action: "GET_BY_RESERVATION_ID", reservation_id: reservation["reservation_id"] }, "roomreserved");
+
+      for (let roomreservedkey in roomsreservation) {
+        let roomsreserved = roomsreservation[roomreservedkey];
+        let room = await send({ action: "GET_BY_ID", room_id: roomsreserved["room_id"] }, "room");
+        reservation.rooms_number.push(room["room_number"]);
+        console.log(room["room_number"]);
+        //roomsreserved.room_number = "11";
       }
-      setRows(all);
+
+    }
+    setRows(all);
   };
-  
+
   useEffect(() => {
     getAllReservations();
   }, []);
+*/
 
-  
   return (
     <Paper sx={{ maxWidth: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 600 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
-            <TableRow sx={{"& th": {color: "rgba(255, 255, 255)",backgroundColor: "purple", fontFamily:"OpenSansBold"}}}>
+            <TableRow sx={{ "& th": { color: "rgba(255, 255, 255)", backgroundColor: "purple", fontFamily: "OpenSansBold" } }}>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth}}
+                  style={{ minWidth: column.minWidth }}
                 >
                   {column.label}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
-          <TableBody style={{backgroundColor:'white'}} >
-            {Rows
+          <TableBody style={{ backgroundColor: 'white' }} >
+            {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
@@ -143,7 +169,7 @@ export default function StickyHeadTable() {
                         <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === 'number'
                             ? column.format(value)
-                            : value}
+                            : <span>{value}</span>}
                         </TableCell>
                       );
                     })}
@@ -154,11 +180,11 @@ export default function StickyHeadTable() {
         </Table>
       </TableContainer>
       <TablePagination
-        style={{backgroundColor:'whitesmoke'}}
+        style={{ backgroundColor: 'whitesmoke' }}
         rowsPerPageOptions={[5, 10, 15]}
-        labelRowsPerPage= {"Filas por columna"}
+        labelRowsPerPage={"Filas por columna"}
         component="div"
-        count={Rows.length}
+        count={rows.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
