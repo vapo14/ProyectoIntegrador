@@ -123,6 +123,13 @@ class ReservationRepository {
   getAll() {
     return this.dao.all(`SELECT * FROM Reservation`);
   }
+
+  async getAllReservationRooms(reservation_id) {
+    return await this.dao.all(
+      "SELECT room_number FROM Room WHERE room_id IN (SELECT room_id FROM RoomReserved WHERE reservation_id = ?)",
+      [reservation_id]
+    );
+  }
 }
 
 module.exports = ReservationRepository;

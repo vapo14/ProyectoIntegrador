@@ -1,13 +1,12 @@
-const { Sync } = require("@mui/icons-material")
+const { Sync } = require("@mui/icons-material");
 
 class RoomReservedRepository {
-    constructor(dao) {
-        this.dao = dao 
-    }
+  constructor(dao) {
+    this.dao = dao;
+  }
 
-
-    createTable() {
-        const sql = `
+  createTable() {
+    const sql = `
         CREATE TABLE IF NOT EXISTS RoomReserved (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             reservation_id INTEGER,
@@ -19,44 +18,37 @@ class RoomReservedRepository {
             Room(room_id) ON UPDATE CASCADE ON DELETE CASCADE
      		
         )
-        `
-        return this.dao.run(sql)
-    }
+        `;
+    return this.dao.run(sql);
+  }
 
-    create(reservation_id, room_id, price) {
-        return this.dao.run(
-            'INSERT INTO RoomReserved (reservation_id, room_id, price) VALUES (?, ?, ?)',
-            [reservation_id, room_id, price]
-        )
-    }
+  create(reservation_id, room_id, price) {
+    return this.dao.run(
+      "INSERT INTO RoomReserved (reservation_id, room_id, price) VALUES (?, ?, ?)",
+      [reservation_id, room_id, price]
+    );
+  }
 
-    // TODO UPDATE METHOD
+  // TODO UPDATE METHOD
 
-    delete(id) {
-        return this.dao.run(
-            `DELETE FROM RoomReserved WHERE id = ?`,
-            [id]
-        )
-    }
+  delete(id) {
+    return this.dao.run(`DELETE FROM RoomReserved WHERE id = ?`, [id]);
+  }
 
-    getById(id) {
-        return this.dao.get(
-            `SELECT * FROM RoomReserved WHERE id = ?`,
-            [id]
-        )
-    }
+  getById(id) {
+    return this.dao.get(`SELECT * FROM RoomReserved WHERE id = ?`, [id]);
+  }
 
-   async getByReservationId(reservation_id) {
-        return await this.dao.all(
-            `SELECT * FROM RoomReserved WHERE reservation_id = ?`,
-            [reservation_id]
-        )
-    }
+  async getByReservationId(reservation_id) {
+    return await this.dao.all(
+      `SELECT * FROM RoomReserved WHERE reservation_id = ?`,
+      [reservation_id]
+    );
+  }
 
-    getAll() {
-        return this.dao.all(`SELECT * FROM RoomReserved`)
-    }
-
+  getAll() {
+    return this.dao.all(`SELECT * FROM RoomReserved`);
+  }
 }
 
 module.exports = RoomReservedRepository;
