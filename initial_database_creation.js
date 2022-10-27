@@ -5,6 +5,7 @@ const UserRolesRepository = require('./dao/user_roles_repository');
 const ReservationRepository = require('./dao/reservation_repository');
 const GuestRepository = require('./dao/guest_repository');
 const RoomRepository = require('./DAO/room_repository');
+const RoomReservedRepository = require('./DAO/room_reserved_repository');
 
 const GeneratePassword = require('./electron/security/generatePassword');
 
@@ -24,7 +25,9 @@ const userRolesRepository = new UserRolesRepository(dao);
 const guestRepository = new GuestRepository(dao);
 const reservation_repository = new ReservationRepository(dao);
 const roomRepository = new RoomRepository(dao);
+const room_reserved_repository = new RoomReservedRepository(dao);
 
+room_reserved_repository.createTable();
 userRepository.createTable();
 guestRepository.createTable();
 reservation_repository.createTable();

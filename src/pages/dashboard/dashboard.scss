@@ -1,8 +1,10 @@
 .dashboard {
     display: flex;
     background-color: thistle;
+    min-width: fit-content!important;
     .dashboardContainer {
         flex: 6;
+        padding-left: 3em;
     }
 }
 
