@@ -5,11 +5,13 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import "./login.scss";
 import send from "../../util/message-emitter";
-import { Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    let navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const {id, value} = e.target;
@@ -24,15 +26,15 @@ const Login = () => {
     }
 
     const handleLogin = async() => {
-        console.log("Submit button was clicked, username is ", username);
         let user = await send({ action: "GET_BY_USERNAME", username }, "user");
-        let currentUserPasswordHash = bcrypt.hashSync(password + user.password_salt);
-        if(user.password_hash == currentUserPasswordHash){
-            alert("Login Exitoso UwU");
-            <Navigate to="/" replace={true}/>
-        } else {
-            alert("Login Fallido >x<");
-        }
+        bcrypt.compare(password + user.password_salt, user.password_hash, function(err, res) {
+            if(res){
+                navigate("/dashboard");
+                alert("Login Exitoso UwU");
+            } else {
+                alert("Login Fallido >x<");
+            }
+        })
     }
 
     return (

@@ -81,8 +81,8 @@ const Register = () => {
         var passwordObj = GeneratePassword(password);
 
         const user = [
-            fullname,
             username,
+            fullname,
             passwordObj.hash_password,
             passwordObj.salt
         ]

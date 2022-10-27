@@ -47,6 +47,8 @@ ipcMain.on("user", async (event, arg) => {
       response = await userRepo.getByUsername(
         payload.username
       );
+
+      console.log("Response :", response);
       break;
     default:
       break;
