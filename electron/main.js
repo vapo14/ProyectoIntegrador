@@ -2,6 +2,116 @@
 const { app, BrowserWindow, protocol } = require("electron");
 const path = require("path");
 const url = require("url");
+const { ipcMain } = require("electron");
+
+const RoomsRepository = require("../DAO/room_repository");
+const RoomsReservedRepository = require("../DAO/room_reserved_repository");
+const GuestRepository = require("../DAO/guest_repository");
+const AppDAO = require("../DAO/dao");
+const ReservationRepository = require("../DAO/reservation_repository");
+const UserRepository = require("../DAO/user_repository");
+const UserRolesRepository = require("../DAO/user_roles_repository");
+
+const appDao = new AppDAO("./database.sqlite3");
+const guestRepo = new GuestRepository(appDao);
+const roomsReservedRepo = new RoomsReservedRepository(appDao);
+const reservationRepo = new ReservationRepository(appDao);
+const roomRepo = new RoomsRepository(appDao);
+const userRepo = new UserRepository(appDao);
+const userRoles = new UserRolesRepository(appDao);
+
+ipcMain.on("reservation", async (event, arg) => {
+  const payload = arg;
+  let response;
+  switch (payload.action) {
+    case "UPDATE":
+      response = await reservationRepo.update(
+        payload.reservation.reservation_id,
+        payload.reservation
+      );
+      break;
+    case "GET_ALL":
+      response = await reservationRepo.getAll();
+      break;
+    case "GET_BY_ID":
+      response = await reservationRepo.getById(payload.reservation_id);
+      break;
+    case "GET_RESERVATION_ROOMS":
+      response = await reservationRepo.getAllReservationRooms(
+        payload.reservation_id
+      );
+      break;
+    default:
+      break;
+  }
+
+  event.reply("reservation-reply", response);
+});
+
+ipcMain.on("room", async (event, arg) => {
+  const payload = arg;
+  let response;
+  switch (payload.action) {
+    case "CREATE":
+      response = await roomRepo.create(...payload.room);
+      break;
+    case "GET_ALL":
+      response = await roomRepo.getAll();
+      break;
+    case "GET_BY_ID":
+      response = await roomRepo.getById(payload.room_id);
+      break;
+    default:
+      break;
+  }
+  event.reply("room-reply", response);
+});
+
+ipcMain.on("roomreserved", async (event, arg) => {
+  const payload = arg;
+  let response;
+  console.log(payload);
+  switch (payload.action) {
+    case "GET_BY_RESERVATION_ID":
+      response = await roomsReservedRepo.getByReservationId(
+        payload.reservation_id
+      );
+      break;
+    default:
+      break;
+  }
+  event.reply("roomreserved-reply", response);
+});
+
+ipcMain.on("user", async (event, arg) => {
+  const payload = arg;
+  let response;
+  switch (payload.action) {
+    case "CREATE":
+      response = await userRepo.create(...payload.user);
+      break;
+    case "GET_BY_USERNAME":
+      response = await userRepo.getByUsername(payload.username);
+      break;
+    default:
+      break;
+  }
+  event.reply("user-reply", response);
+});
+
+ipcMain.on("userRole", async (event, arg) => {
+  const payload = arg;
+  let response;
+  switch (payload.action) {
+    case "CREATE":
+      response = await userRoles.create(...payload.userrole);
+      break;
+    default:
+      break;
+  }
+
+  event.reply("user-reply", response);
+});
 
 // Create the native browser window.
 function createWindow() {
@@ -12,6 +122,8 @@ function createWindow() {
     // communicate between node-land and browser-land.
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
@@ -32,6 +144,19 @@ function createWindow() {
     mainWindow.webContents.openDevTools();
   }
 }
+
+ipcMain.on("guest", async (event, arg) => {
+  const payload = arg;
+  let response;
+  switch (payload.action) {
+    case "GET_BY_ID":
+      response = await guestRepo.getById(payload.guest_id);
+      break;
+    default:
+      break;
+  }
+  event.reply("guest-reply", response);
+});
 
 // Setup a local proxy to adjust the paths of requested files when loading
 // them from the local production bundle (e.g.: local fonts, etc...).
