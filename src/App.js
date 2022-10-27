@@ -2,11 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Register from './pages/register/Register';
 import Dashboard from './pages/dashboard/Dashboard';
 import CreateRoom from './pages/room/CreateRoom';
-import BookingCalendar from './pages/bookingCalendar/BookingCalendar';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Register from "./pages/register/Register";
-import Dashboard from "./pages/dashboard/Dashboard";
 import BookingCalendar from "./pages/bookingCalendar/BookingCalendar";
+import Login from './pages/login/Login';
 
 function App() {
   return (

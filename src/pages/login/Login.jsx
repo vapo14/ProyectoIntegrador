@@ -43,7 +43,7 @@ const Login = () => {
             <div className="loginContainer">
                 <Navbar />
                 <div className="top">
-                    <h1>Ingersar Usuario</h1>
+                    <h1>Ingresar Usuario</h1>
                 </div>
                 <div className="bottom">
                     <div className="form">
