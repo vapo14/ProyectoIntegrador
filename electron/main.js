@@ -5,11 +5,13 @@ const path = require("path");
 const url = require("url");
 const { ipcMain } = require("electron");
 
-const AppDAO = require("../dao/dao");
-const ReservationRepository = require("../dao/reservation_repository");
+const AppDAO = require("../DAO/dao");
+const ReservationRepository = require("../DAO/reservation_repository");
+const UserRepository = require("../DAO/user_repository");
 
 const appDao = new AppDAO("./database.sqlite3");
 const reservationRepo = new ReservationRepository(appDao);
+const userRepo = new UserRepository(appDao);
 
 ipcMain.on("reservation", async (event, arg) => {
   const payload = arg;
@@ -31,6 +33,23 @@ ipcMain.on("reservation", async (event, arg) => {
   }
 
   event.reply("reservation-reply", response);
+});
+
+
+ipcMain.on("user", async (event, arg) => {
+  const payload = arg;
+  let response;
+  switch (payload.action) {
+    case "GET_BY_USERNAME":
+      response = await userRepo.getByUsername(
+        payload.username
+      );
+      break;
+    default:
+      break;
+  }
+
+  event.reply("login-reply", response);
 });
 
 // Create the native browser window.
