@@ -5,8 +5,8 @@ const path = require("path");
 const url = require("url");
 const { ipcMain } = require("electron");
 
-const AppDAO = require("../dao/dao");
-const ReservationRepository = require("../dao/reservation_repository");
+const AppDAO = require("../DAO/dao");
+const ReservationRepository = require("../DAO/reservation_repository");
 const RoomsRepository = require("../DAO/room_repository");
 const GuestRepository = require("../DAO/guest_repository");
 
@@ -31,6 +31,11 @@ ipcMain.on("reservation", async (event, arg) => {
     case "GET_BY_ID":
       response = await reservationRepo.getById(payload.reservation_id);
       break;
+    case "GET_RESERVATION_ROOMS":
+      response = await reservationRepo.getAllReservationRooms(
+        payload.reservation_id
+      );
+      break;
     default:
       break;
   }
@@ -44,6 +49,9 @@ ipcMain.on("room", async (event, arg) => {
   switch (payload.action) {
     case "CREATE":
       response = await roomRepo.create(...payload.room);
+      break;
+    case "GET_ALL":
+      response = await roomRepo.getAll();
       break;
     default:
       break;

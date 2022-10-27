@@ -18,7 +18,7 @@ class RoomsRepository {
 
   async create(room_number, beds_type_number, current_price, jacuzzi) {
     return await this.dao.run(
-      'INSERT INTO Room (room_number, beds_type_number, current_price, jacuzzi) VALUES (?, ?, ?, ?)',
+      "INSERT INTO Room (room_number, beds_type_number, current_price, jacuzzi) VALUES (?, ?, ?, ?)",
       [room_number, beds_type_number, current_price, jacuzzi]
     );
   }
@@ -29,10 +29,10 @@ class RoomsRepository {
   }
 
   generate_column_update_query(update_object) {
-    let columns_values = '';
+    let columns_values = "";
     for (let key in update_object) {
-      if (key === 'room_id') continue;
-      if (typeof update_object[key] === 'string') {
+      if (key === "room_id") continue;
+      if (typeof update_object[key] === "string") {
         columns_values.concat(`${key} = '${update_object[key]}',`);
       } else {
         columns_values.concat(`${key} = ${update_object[key]},`);
@@ -50,11 +50,11 @@ class RoomsRepository {
   }
 
   async getById(room_id) {
-    return this.dao.get('SELECT * FROM Room WHERE room_id = ?', [room_id]);
+    return this.dao.get("SELECT * FROM Room WHERE room_id = ?", [room_id]);
   }
 
-  getAll() {
-    return this.dao.get('SELECT * FROM Room');
+  async getAll() {
+    return await this.dao.all("SELECT * FROM Room");
   }
 }
 

@@ -1,0 +1,8 @@
+.calendar {
+  display: flex;
+  min-width: fit-content !important;
+  .calendarContainer {
+    flex: 6;
+    padding-left: 3em;
+  }
+}
