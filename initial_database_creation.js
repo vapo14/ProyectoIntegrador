@@ -5,7 +5,7 @@ const UserRolesRepository = require("./dao/user_roles_repository");
 const ReservationRepository = require("./dao/reservation_repository");
 const GuestRepository = require("./dao/guest_repository");
 
-const GeneratePassword = require("./electron/security/generatePassword");
+const GeneratePassword = require("./src/security/generatePassword");
 
 const dao = new AppDAO("./database.sqlite3");
 var password = "password123";

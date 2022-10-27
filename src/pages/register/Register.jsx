@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
+import GeneratePassword from "../../security/generatePassword";
 import "./register.scss";
+import send from "../../util/message-emitter";
+import { FormErrors } from "./FormErrors";
+
 
 const Register = () => {
     const [fullname, setFullname] = useState("");
@@ -9,6 +13,7 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [userRole, setUserRole] = useState("Administrador");
+    const [formErrors, setFormErrors] = useState({username: '', password: ''});
 
     const handleInputChange = (e) => {
         const {id, value} = e.target;
@@ -34,8 +39,65 @@ const Register = () => {
 
     }
 
-    const handleSubmit = () => {
-        console.log(fullname, username, password, confirmPassword, userRole);
+    const validateSubmit= () => {
+
+        if(password != confirmPassword) {
+            setFormErrors({username:'', password:'Las contraseñas no coinciden.'})
+            return false;
+        }
+
+        if(! password.length >= 8 ) {
+            setFormErrors({username:'', password:'La contraseña es demasiado corta, porfavor escribe al menos 8 caracteres.'})
+            return false;
+        }
+
+        if(! username.length >= 6) {
+            setFormErrors({username:'El usuario proporcionado es demasiado corto, porfavor escribe al menos 6 caracteres', password:''})
+            return false;
+        }
+
+        if(! username.length >= 6 && ! password.length >= 8 ) {
+            setFormErrors({username:'El usuario proporcionado es demasiado corto, porfavor escribe al menos 6 caracteres', password:'La contraseña es demasiado corta, porfavor escribe al menos 8 caracteres.'})
+            return false;
+        }
+
+        return true;
+    }
+
+    const clearInputs = () => {
+        setFullname = '';
+        setUsername = '';
+        setPassword = '';
+        setConfirmPassword = '';
+
+        alert('El usuario fue creado con éxito.');
+    }
+
+    const handleSubmit = async () => {
+        if(!validateSubmit()) {
+            return;
+        }
+
+        var passwordObj = GeneratePassword(password);
+
+        const user = [
+            fullname,
+            username,
+            passwordObj.hash_password,
+            passwordObj.salt
+        ]
+
+        console.log(user);
+
+        let res = await send({ action: 'CREATE', user}, 'user');
+
+        if(!res) {
+            alert('No se pudo crear el usuario..');
+        } 
+        else {
+            clearInputs();
+        } 
+
     }
 
     return (
@@ -72,7 +134,8 @@ const Register = () => {
                                     <option value="User">Usuario</option>
                                 </select>
                             </div>
-                            <button onClick={() => handleSubmit()} type="submit" >Registrar</button>
+                            <button onClick={handleSubmit} type="submit" >Registrar</button>
+                            <FormErrors formErrors={formErrors} />
                         </form>
                     </div>
                 </div>
