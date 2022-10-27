@@ -1,21 +1,24 @@
-const GeneratePassword = require('./security/generatePassword');
 // Module to control the application lifecycle and the native browser window.
 const { app, BrowserWindow, protocol } = require('electron');
 const path = require('path');
 const url = require('url');
 const { ipcMain } = require('electron');
 
-const AppDAO = require('../DAO/dao');
-const ReservationRepository = require('../DAO/reservation_repository');
 const RoomsRepository = require('../DAO/room_repository');
 const RoomsReservedRepository = require('../DAO/room_reserved_repository')
 const GuestRepository = require('../DAO/guest_repository');
+const AppDAO = require("../DAO/dao");
+const ReservationRepository = require("../DAO/reservation_repository");
+const UserRepository = require("../DAO/user_repository");
+const UserRolesRepository = require("../DAO/user_roles_repository");
 
 const appDao = new AppDAO('./database.sqlite3');
 const guestRepo = new GuestRepository(appDao);
 const roomsReservedRepo = new RoomsReservedRepository(appDao); 
 const reservationRepo = new ReservationRepository(appDao);
 const roomRepo = new RoomsRepository(appDao);
+const userRepo = new UserRepository(appDao);
+const userRoles = new UserRolesRepository(appDao);
 
 ipcMain.on('reservation', async (event, arg) => {
   const payload = arg;
@@ -56,6 +59,7 @@ ipcMain.on('room', async (event, arg) => {
   event.reply('room-reply', response);
 });
 
+
 ipcMain.on('roomreserved', async (event, arg) => {
   const payload = arg;
   let response;
@@ -64,11 +68,45 @@ ipcMain.on('roomreserved', async (event, arg) => {
     case 'GET_BY_RESERVATION_ID':
       response = await roomsReservedRepo.getByReservationId(payload.reservation_id);
       console.log(response);
+
+
+ipcMain.on("user", async (event, arg) => {
+  const payload = arg;
+  let response;
+  switch (payload.action) {
+    case "CREATE":
+      response = await userRepo.create(...payload.user);
+    case "GET_BY_USERNAME":
+      response = await userRepo.getByUsername(
+        payload.username
+      );
+
+      console.log("Response :", response);
+
       break;
     default:
       break;
   }
+
   event.reply('roomreserved-reply', response);
+
+
+  event.reply("user-reply", response);
+});
+
+ipcMain.on("userRole", async (event, arg) => {
+  const payload = arg;
+  let response;
+  switch (payload.action) {
+    case "CREATE":
+      response = await userRoles.create(...payload.userrole);
+      break;
+    default:
+      break;
+  }
+
+  event.reply("user-reply", response);
+
 });
 
 // Create the native browser window.
