@@ -38,7 +38,7 @@ const Register = () => {
   };
 
   const validateSubmit = () => {
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       setFormErrors({
         username: "",
         password: "Las contraseñas no coinciden.",
@@ -104,6 +104,7 @@ const Register = () => {
     console.log(user);
 
     let res = await send({ action: "CREATE", user }, "user");
+    console.log("RES: ", res);
 
     if (!res) {
       alert("No se pudo crear el usuario..");
@@ -144,7 +145,7 @@ const Register = () => {
               <div className="formInput">
                 <label>Contraseña</label>
                 <input
-                  type="password"
+                  type="text"
                   value={password}
                   onChange={(e) => handleInputChange(e)}
                   id="password"
@@ -153,7 +154,7 @@ const Register = () => {
               <div className="formInput">
                 <label>Confirmar Contraseña</label>
                 <input
-                  type="password"
+                  type="text"
                   value={confirmPassword}
                   onChange={(e) => handleInputChange(e)}
                   id="confirmPassword"

@@ -57,6 +57,7 @@ ipcMain.on("room", async (event, arg) => {
       break;
     case "GET_ALL":
       response = await roomRepo.getAll();
+      break;
     case "GET_BY_ID":
       response = await roomRepo.getById(payload.room_id);
       break;
@@ -75,7 +76,11 @@ ipcMain.on("roomreserved", async (event, arg) => {
       response = await roomsReservedRepo.getByReservationId(
         payload.reservation_id
       );
+      break;
+    default:
+      break;
   }
+  event.reply("roomreserved-reply", response);
 });
 
 ipcMain.on("user", async (event, arg) => {
@@ -84,11 +89,9 @@ ipcMain.on("user", async (event, arg) => {
   switch (payload.action) {
     case "CREATE":
       response = await userRepo.create(...payload.user);
+      break;
     case "GET_BY_USERNAME":
       response = await userRepo.getByUsername(payload.username);
-
-      console.log("Response :", response);
-
       break;
     default:
       break;
