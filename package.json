@@ -17,8 +17,10 @@
     "@testing-library/user-event": "^13.5.0",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.2.2",
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "crypto-hash": "^2.0.1",
+    "express": "^4.18.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-calendar-timeline": "^0.28.0",
@@ -34,7 +36,7 @@
     "build": "yarn electron:package:win",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electronmon .\"",
+    "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electronmon .\" \"nodemon server.js\"",
     "electron:package:win": "react-scripts build && electron-builder -w -c.extraMetadata.main=electron/main.js",
     "postinstall": "electron-builder install-app-deps && node ./initial_database_creation.js",
     "release": "electron-builder --windows --publish always -c.extraMetadata.main=electron/main.js"
@@ -66,6 +68,7 @@
     "electron-builder": "^23.3.3",
     "electron-rebuild": "^3.2.9",
     "electronmon": "^2.0.2",
+    "nodemon": "^2.0.20",
     "wait-on": "^6.0.1"
   },
   "build": {
