@@ -1,17 +1,20 @@
 const ReservationRepository = require("../DAO/reservation_repository");
 const AppDAO = require("../DAO/dao");
+const {
+  getAllReservationsWithRooms,
+} = require("../service/reservationService");
 
 const appDAO = new AppDAO("./database.sqlite3");
 const reservationRepo = new ReservationRepository(appDAO);
 
 /**
- * Gets all reservations on database
+ * Gets all reservations on database including the rooms
  * @param {*} req
  * @param {*} res
  */
 const getAllReservations = async (req, res) => {
   try {
-    let response = await reservationRepo.getAll();
+    let response = await getAllReservationsWithRooms();
     return res.status(200).json(response);
   } catch (error) {
     return res.status(500).json(error);
