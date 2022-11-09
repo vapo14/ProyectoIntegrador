@@ -12,9 +12,9 @@ const reservationRepo = new ReservationRepository(appDAO);
 const getAllReservations = async (req, res) => {
   try {
     let response = await reservationRepo.getAll();
-    res.status(200).json(response).send();
+    return res.status(200).json(response);
   } catch (error) {
-    res.status(500).json(error).send();
+    return res.status(500).json(error);
   }
 };
 
@@ -38,9 +38,9 @@ const createReservation = async (req, res) => {
       reservation.number_of_children,
       reservation.payment_date
     );
-    res.status(201).json(response).send();
+    return res.status(201).json(response);
   } catch (error) {
-    res.status(500).json(error).send();
+    return res.status(500).json(error);
   }
 };
 

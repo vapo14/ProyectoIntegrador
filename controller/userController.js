@@ -18,9 +18,9 @@ const createUser = async (req, res) => {
       userInfo.password_hash,
       userInfo.password_salt
     );
-    res.status(200).json(response);
+    return res.status(200).json(response);
   } catch (err) {
-    res.status(500).send();
+    return res.status(500);
   }
 };
 
