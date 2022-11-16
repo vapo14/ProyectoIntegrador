@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import "./dashboard.scss";
 import React, { useEffect, useState } from "react";
 import send from "../../util/message-emitter";
+import axiosInstance from "../../api/axiosInstance";
 
 const columns = [
   { id: 'guest_id', label: 'Folio_Invitado' },
@@ -89,7 +90,7 @@ export default function StickyHeadTable() {
     setPage(0);
   };
 
-
+/*
   function createData(guest_id, user_id, start_date, full_name, end_date, ts_created,ts_updated,total_price,form_of_booking,company_name,number_of_adults, number_of_children, payment_date,origin, room_number ) {
 
     return { guest_id, user_id, start_date, full_name, end_date, ts_created,ts_updated,total_price,form_of_booking,company_name,number_of_adults, number_of_children, payment_date,origin, room_number};
@@ -107,39 +108,26 @@ export default function StickyHeadTable() {
     createData('9', '9', "02-10-2022", "Cesar M", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "22"),
     createData('10', '10', "02-10-2022", "Javier Sosa", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "32"),
   ];
-  
-/*
+  */
+
+//coments
   const [Rows, setRows] = useState([]);
 
   const getAllReservations = async () => {
-    let all = await send({ action: "GET_ALL" }, "reservation");
-    //console.log(all);
-    for (let key in all) {
-      let reservation = all[key];
-      let guest = await send({ action: "GET_BY_ID", guest_id: reservation["guest_id"] }, "guest");
-      reservation.full_name = guest.full_name;
-      reservation.origin = guest.origin;
-      
-      reservation.rooms_number = [];
-      let roomsreservation = await send({ action: "GET_BY_RESERVATION_ID", reservation_id: reservation["reservation_id"] }, "roomreserved");
-
-      for (let roomreservedkey in roomsreservation) {
-        let roomsreserved = roomsreservation[roomreservedkey];
-        let room = await send({ action: "GET_BY_ID", room_id: roomsreserved["room_id"] }, "room");
-        reservation.rooms_number.push(room["room_number"]);
-        console.log(room["room_number"]);
-        //roomsreserved.room_number = "11";
-      }
-
-    }
-    setRows(all);
+    let all = await axiosInstance.get("/reservations");
+    console.log(all);
+    setRows(all.data.map((res) => {
+      res.room_number = res.rooms.map(room => room.room_number).join(",")
+      return res;
+    }));
   };
 
+  console.log("Estaa",Rows);
   useEffect(() => {
     getAllReservations();
   }, []);
-*/
 
+//coments
   return (
     <Paper sx={{ maxWidth: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 600 }}>
@@ -158,7 +146,7 @@ export default function StickyHeadTable() {
             </TableRow>
           </TableHead>
           <TableBody style={{ backgroundColor: 'white' }} >
-            {rows
+            {Rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
@@ -184,7 +172,7 @@ export default function StickyHeadTable() {
         rowsPerPageOptions={[5, 10, 15]}
         labelRowsPerPage={"Filas por columna"}
         component="div"
-        count={rows.length}
+        count={Rows.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

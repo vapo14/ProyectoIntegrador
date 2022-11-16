@@ -121,12 +121,12 @@ class ReservationRepository {
   }
 
   getAll() {
-    return this.dao.all(`SELECT * FROM Reservation`);
+    return this.dao.all(`SELECT Reservation.*,Guest.full_name, Guest.origin FROM Reservation INNER JOIN Guest ON Reservation.guest_id = Guest.guest_id`);
   }
 
   async getAllReservationRooms(reservation_id) {
     return await this.dao.all(
-      "SELECT room_number FROM Room WHERE room_id IN (SELECT room_id FROM RoomReserved WHERE reservation_id = ?)",
+      "SELECT * FROM Room WHERE room_id IN (SELECT room_id FROM RoomReserved WHERE reservation_id = ?)",
       [reservation_id]
     );
   }
