@@ -11,7 +11,7 @@ const userRepo = new UserRepository(appDAO);
  */
 const createUser = async (req, res) => {
   try {
-    let userInfo = req.body.user;
+    let userInfo = req.body;
     let response = await userRepo.create(
       userInfo.username,
       userInfo.full_name,
