@@ -3,7 +3,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import GeneratePassword from "../../security/generatePassword";
 import "./register.scss";
-import send from "../../util/message-emitter";
+import axiosInstance from "../../api/axiosInstance";
 import { FormErrors } from "./FormErrors";
 
 const Register = () => {
@@ -86,6 +86,7 @@ const Register = () => {
     alert("El usuario fue creado con éxito.");
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateSubmit()) {
@@ -94,16 +95,16 @@ const Register = () => {
 
     var passwordObj = GeneratePassword(password);
 
-    const user = [
-      username,
-      fullname,
-      passwordObj.hash_password,
-      passwordObj.salt,
-    ];
+    const user = {
+      username : username,
+      full_name : fullname,
+      password_hash : passwordObj.hash_password,
+      password_salt : passwordObj.salt,
+    };
 
-    console.log(user);
+    console.log(user)
 
-    let res = await send({ action: "CREATE", user }, "user");
+    let res = await axiosInstance.post("/users", user);
     console.log("RES: ", res);
 
     if (!res) {
@@ -145,7 +146,7 @@ const Register = () => {
               <div className="formInput">
                 <label>Contraseña</label>
                 <input
-                  type="text"
+                  type="password"
                   value={password}
                   onChange={(e) => handleInputChange(e)}
                   id="password"
@@ -154,7 +155,7 @@ const Register = () => {
               <div className="formInput">
                 <label>Confirmar Contraseña</label>
                 <input
-                  type="text"
+                  type="password"
                   value={confirmPassword}
                   onChange={(e) => handleInputChange(e)}
                   id="confirmPassword"
