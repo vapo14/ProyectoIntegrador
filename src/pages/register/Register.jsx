@@ -102,10 +102,8 @@ const Register = () => {
       password_salt : passwordObj.salt,
     };
 
-    console.log(user)
 
     let res = await axiosInstance.post("/users", user);
-    console.log("RES: ", res);
 
     if (!res) {
       alert("No se pudo crear el usuario..");
