@@ -86,7 +86,6 @@ const Register = () => {
     alert("El usuario fue creado con éxito.");
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateSubmit()) {
@@ -96,12 +95,11 @@ const Register = () => {
     var passwordObj = GeneratePassword(password);
 
     const user = {
-      username : username,
-      full_name : fullname,
-      password_hash : passwordObj.hash_password,
-      password_salt : passwordObj.salt,
+      username: username,
+      full_name: fullname,
+      password_hash: passwordObj.hash_password,
+      password_salt: passwordObj.salt,
     };
-
 
     let res = await axiosInstance.post("/users", user);
 

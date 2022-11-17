@@ -1,7 +1,6 @@
-import { useRef, useState } from 'react';
-import Sidebar from '../../components/sidebar/Sidebar';
-import send from '../../util/message-emitter';
-import './createRoom.scss';
+import { useRef, useState } from "react";
+import Sidebar from "../../components/sidebar/Sidebar";
+import "./createRoom.scss";
 
 const CreateRoom = () => {
   const roomNumRef = useRef();
@@ -11,27 +10,25 @@ const CreateRoom = () => {
   const jacuzziRef = useRef();
 
   const handleSubmit = async () => {
-    const room = [
-      roomNumRef.current.value,
-      bedAmountRef.current.value,
-      priceRef.current.value,
-      jacuzziRef.current.checked,
-    ];
-    console.table([...room]);
-
-    let res = await send({ action: 'CREATE', room }, 'room');
-
-    if (!res) alert('No se pudo crear la habitación...');
-    else clearInputs();
+    // const room = [
+    //   roomNumRef.current.value,
+    //   bedAmountRef.current.value,
+    //   priceRef.current.value,
+    //   jacuzziRef.current.checked,
+    // ];
+    // console.table([...room]);
+    // let res = await send({ action: "CREATE", room }, "room");
+    // if (!res) alert("No se pudo crear la habitación...");
+    // else clearInputs();
   };
 
   const clearInputs = () => {
-    roomNumRef.current.value = '';
-    bedAmountRef.current.value = '';
-    priceRef.current.value = '';
+    roomNumRef.current.value = "";
+    bedAmountRef.current.value = "";
+    priceRef.current.value = "";
     jacuzziRef.current.checked = false;
 
-    alert('La habitación fue creada con éxito.');
+    alert("La habitación fue creada con éxito.");
   };
 
   return (

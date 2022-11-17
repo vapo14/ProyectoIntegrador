@@ -5,7 +5,7 @@
   "author": "JECSV a01568010@gmail.com",
   "description": "A hotel reservation system made with electron and react.",
   "homepage": "./",
-  "main": "./electron/main.js",
+  "main": "main.js",
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
@@ -22,6 +22,8 @@
     "crypto": "^1.0.1",
     "crypto-hash": "^2.0.1",
     "express": "^4.18.2",
+    "interactjs": "^1.10.17",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-calendar-timeline": "^0.28.0",
@@ -29,7 +31,7 @@
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
     "sass": "^1.55.0",
-    "sqlite3": "^5.1.1",
+    "sqlite3": "^5.1.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -37,10 +39,11 @@
     "build": "yarn electron:package:win",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electronmon .\" \"nodemon server.js\"",
-    "electron:package:win": "react-scripts build && electron-builder -w -c.extraMetadata.main=electron/main.js",
-    "postinstall": "electron-builder install-app-deps && node ./initial_database_creation.js",
-    "release": "electron-builder --windows --publish always -c.extraMetadata.main=electron/main.js"
+    "rebuild": "electron-rebuild -w sqlite3 -p",
+    "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electronmon .\"",
+    "electron:package:win": "react-scripts build && electron-builder -w -c.extraMetadata.main=main.js",
+    "postinstall": "electron-builder install-app-deps",
+    "release": "electron-builder --windows --publish always -c.extraMetadata.main=main.js"
   },
   "eslintConfig": {
     "extends": [
@@ -67,6 +70,7 @@
     "cross-env": "^7.0.3",
     "electron": "^20.2.0",
     "electron-builder": "^23.3.3",
+    "electron-packager": "^17.1.1",
     "electron-rebuild": "^3.2.9",
     "electronmon": "^2.0.2",
     "nodemon": "^2.0.20",
@@ -78,11 +82,21 @@
     "files": [
       "build/**/*",
       "node_modules/**/*",
-      "electron/**/*"
+      "main.js",
+      "preload.js",
+      "DAO/**/*",
+      "server.js",
+      "routes.js",
+      "service/**/*",
+      "controller/**/*",
+      "initial_database_creation.js",
+      "*.js",
+      "database.sqlite3"
     ],
+    "beforePack": "./initial_database_creation.js",
     "extends": null,
     "directories": {
-      "buildResources": "public"
+      "buildResources": "build"
     },
     "mac": {
       "target": "dmg"

@@ -1,4 +1,4 @@
-const ReservationRepository = require("../DAO/reservation_repository");
+const ReservationRepository = require("..//DAO/reservation_repository");
 const AppDAO = require("../DAO/dao");
 const {
   getAllReservationsWithRooms,
