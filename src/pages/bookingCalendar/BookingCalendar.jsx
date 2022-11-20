@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import Sidebar from "../../components/sidebar/Sidebar";
-import send from "../../util/message-emitter";
 import moment from "moment";
 import "./calendar.scss";
 import Timeline from "react-calendar-timeline";
 import "react-calendar-timeline/lib/Timeline.css";
+import axiosInstance from "../../api/axiosInstance";
 
 export default function BookingCalendar() {
   const [Reservations, setReservations] = useState([]);
-  const [Rooms, SetRooms] = useState([]);
 
   let groups = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => {
     return {
@@ -95,13 +94,11 @@ export default function BookingCalendar() {
     };
   });
 
-  console.log(reservations);
-
   const getAllReservations = async () => {
-    let all = await send({ action: "GET_ALL" }, "reservation");
-
+    let all = await axiosInstance.get("/reservations");
+    console.log(all);
     setReservations(
-      all.map((res) => {
+      all.data.map((res) => {
         res.start_time = res.start_date;
         res.end_time = res.end_date;
         res.group = 1;
@@ -111,32 +108,8 @@ export default function BookingCalendar() {
     );
   };
 
-  const getAllRooms = async () => {
-    let rooms = await send({ action: "GET_ALL" }, "room");
-    SetRooms(
-      rooms.map((room) => {
-        room.id = room.room_id;
-        room.title = room.room_number;
-        return room;
-      })
-    );
-  };
-
-  const linkReservationsToRooms = async () => {
-    let rooms;
-    for (let res of Reservations) {
-      rooms = await send(
-        { action: "GET_RESERVATION_ROOMS", reservation_id: res.reservation_id },
-        "reservation"
-      );
-      res.rooms = rooms;
-    }
-  };
-
   useEffect(() => {
     getAllReservations();
-    getAllRooms();
-    linkReservationsToRooms();
   }, []);
 
   return (

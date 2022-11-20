@@ -16,8 +16,8 @@ class UserRepository {
         return this.dao.run(sql)
     }
 
-    create(username, full_name, password_hash, password_salt) {
-        return this.dao.run(
+    async create(username, full_name, password_hash, password_salt) {
+        return await this.dao.run(
             'INSERT INTO User (username, full_name, password_hash, password_salt) VALUES (?, ?, ?, ?)',
             [username, full_name, password_hash, password_salt]
         )
