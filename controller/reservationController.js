@@ -23,13 +23,11 @@ const getAllReservations = async (req, res) => {
 
 const createReservation = async (req, res) => {
   try {
-    let reservation = req.body.reservation;
+    let reservation = req.body;
     // this is not ideal, we should change this to make the create function
     // receive a single object, not every field seperately
     // TODO: fix this mess
     let response = await reservationRepo.create(
-      reservation.reservation_id,
-      reservation.user_id,
       reservation.start_date,
       reservation.end_date,
       reservation.ts_created,
