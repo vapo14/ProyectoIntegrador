@@ -16,14 +16,20 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.1.3",
+    "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.2.2",
+    "connect-mongo": "^4.6.0",
     "cors": "^2.8.5",
-    "crypto": "^1.0.1",
     "crypto-hash": "^2.0.1",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "interactjs": "^1.10.17",
     "moment": "^2.29.4",
+    "mongoose": "^6.7.2",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-calendar-timeline": "^0.28.0",
@@ -35,8 +41,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start" : "node server.js",
-    "dev": "concurrently -k \"cross-env BROWSER=none react-scripts start\" \"electronmon server.js\"",
+    "start": "node server.js",
+    "dev": "concurrently -k \"cross-env BROWSER=none react-scripts start\" \"nodemon server.js\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -70,5 +76,6 @@
     "electronmon": "^2.0.2",
     "nodemon": "^2.0.20",
     "wait-on": "^6.0.1"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }
