@@ -22,6 +22,8 @@
     "crypto": "^1.0.1",
     "crypto-hash": "^2.0.1",
     "express": "^4.18.2",
+    "interactjs": "^1.10.17",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-calendar-timeline": "^0.28.0",
@@ -33,14 +35,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "yarn electron:package:win",
+    "start" : "node server.js",
+    "dev": "concurrently -k \"cross-env BROWSER=none react-scripts start\" \"electronmon server.js\"",
+    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electronmon .\" \"nodemon server.js\"",
-    "electron:package:win": "react-scripts build && electron-builder -w -c.extraMetadata.main=electron/main.js",
-    "postinstall": "electron-builder install-app-deps && node ./initial_database_creation.js",
-    "release": "electron-builder --windows --publish always -c.extraMetadata.main=electron/main.js"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -71,27 +70,5 @@
     "electronmon": "^2.0.2",
     "nodemon": "^2.0.20",
     "wait-on": "^6.0.1"
-  },
-  "build": {
-    "appId": "com.electron.myapp",
-    "productName": "My Electron App",
-    "files": [
-      "build/**/*",
-      "node_modules/**/*",
-      "electron/**/*"
-    ],
-    "extends": null,
-    "directories": {
-      "buildResources": "public"
-    },
-    "mac": {
-      "target": "dmg"
-    },
-    "win": {
-      "target": "nsis"
-    },
-    "linux": {
-      "target": "deb"
-    }
   }
 }
