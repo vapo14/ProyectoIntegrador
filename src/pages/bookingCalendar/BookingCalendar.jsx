@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import Sidebar from "../../components/sidebar/Sidebar";
-import send from "../../util/message-emitter";
 import moment from "moment";
 import "./calendar.scss";
 import Timeline from "react-calendar-timeline";
