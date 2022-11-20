@@ -42,7 +42,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "concurrently -k \"cross-env BROWSER=none react-scripts start\" \"electronmon server.js\"",
+    "dev": "concurrently -k \"cross-env BROWSER=none react-scripts start\" \"nodemon server.js\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -76,5 +76,6 @@
     "electronmon": "^2.0.2",
     "nodemon": "^2.0.20",
     "wait-on": "^6.0.1"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }

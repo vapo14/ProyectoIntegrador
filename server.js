@@ -60,7 +60,7 @@ app.use(passport.session());
 // let express app use json parsing
 app.use(express.json());
 // custom routes file (routes.js)
-app.use(routes);
+app.use("/api", routes);
 
 // prevent any undefined routes from loading,
 // only redirect to main react app
