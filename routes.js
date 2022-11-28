@@ -2,7 +2,6 @@ const {
   getAllReservations,
   createReservation,
 } = require("./controller/reservationController");
-const { createGuest } = require("./controller/guestController");
 const { createRoom } = require("./controller/roomController");
 const {
   createUser,
@@ -27,9 +26,6 @@ router.post(
 // reservations routes
 router.get("/reservations", getAllReservations);
 router.post("/reservations/create", createReservation);
-
-// guest routes
-router.post("/guests", createGuest);
 
 // room routes
 router.post("/rooms", createRoom);

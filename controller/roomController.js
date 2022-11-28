@@ -1,25 +1,19 @@
-const RoomRepository = require("../DAO/room_repository");
-const AppDAO = require("../DAO/dao");
-
-const appDAO = new AppDAO("./database.sqlite3");
-const roomRepo = new RoomRepository(appDAO);
+const RoomModel = require("../models/RoomModel");
 
 /**
- * Gets all rooms
+ * Create rooms
  * @param {*} req
  * @param {*} res
  */
 
 const createRoom = async (req, res) => {
     try {
-        let room = req.body;
-        let response = await roomRepo.create(
-            room.room_number,
-            room.beds_type_number,
-            room.current_price,
-            room.jacuzzi,
-        );
-        return res.status(201).json(response);
+        let roomData = req.body.room;
+        let newRoom = new RoomModel(roomData);
+        newRoom.save((err) => {
+            if (err) res.status(500).send(err);
+            return res.status(201).json({ status: "ROOM_SAVED" });
+          });
     } catch (error) {
         return res.status(500).json(error);
     }
