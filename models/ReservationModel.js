@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const RoomModel = require("./RoomModel");
 
 const reservationSchema = new mongoose.Schema(
   {
@@ -50,10 +51,15 @@ const reservationSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    origin:{
+    origin: {
       type: String,
       required: true,
-    }
+    },
+    rooms: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Rooms",
+      required: true,
+    },
   },
   { collection: "Reservations" }
 );
