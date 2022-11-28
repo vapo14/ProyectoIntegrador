@@ -1,5 +1,5 @@
-const ReservationModel = require("../models/ReservationModel");
-const RoomModel = require("../models/RoomModel");
+const ReservationModel = require('../models/ReservationModel');
+const RoomModel = require('../models/RoomModel');
 
 /**
  * Gets all reservations on database including the rooms
@@ -26,26 +26,36 @@ const createReservation = async (req, res) => {
     // validate if rooms are correct
     // room_numbers = [1,3,4,5]
     let room_numbers = req.body.room_numbers;
+
+    // check that there is at least one room
+    if (room_numbers.length < 1) {
+      return res.status(400).json({
+        status: 'failed to create reservation',
+        message: `The reservation must have at least one room number.`,
+      });
+    }
+
     let roomsArray = [];
     for (const room of room_numbers) {
       let tmpRoom = await RoomModel.findOne({ room_number: room });
       if (!tmpRoom) {
         return res.status(400).json({
-          status: "failed to create reservation",
+          status: 'failed to create reservation',
           message: `Room number ${room} was not found.`,
         });
       }
-      roomsArray.push(tmpRoom._id);
+      roomsArray.push(tmpRoom._id.toString());
     }
+
     let reservation = req.body.reservation;
-    let rightNow = new Date().toLocaleDateString();
+    let rightNow = new Date().toISOString();
     reservation.ts_created = rightNow;
     reservation.ts_updated = rightNow;
     reservation.rooms = roomsArray;
     let newRes = new ReservationModel(reservation);
     newRes.save((err) => {
-      if (err) res.status(500).send(err);
-      return res.status(201).json({ status: "RESERVATION_SAVED" });
+      if (err) return res.status(500).send(err);
+      return res.status(201).json({ status: 'RESERVATION_SAVED' });
     });
   } catch (error) {
     return res.status(500).json(error);
