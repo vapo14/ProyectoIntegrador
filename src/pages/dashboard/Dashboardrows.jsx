@@ -13,21 +13,11 @@ import axiosInstance from "../../api/axiosInstance";
 
 const columns = [
   { id: "user_id", label: "Folio_Usuario" },
-
-  { id: "start_date", label: "Check-In" },
   { id: "guest_name", label: "Nombre" },
+  { id: "start_date", label: "Check-In" },
   {
     id: "end_date",
     label: "Check-out",
-  },
-  {
-    id: "ts_created",
-    label: "Comienzo TS",
-  },
-  {
-    id: "ts_updated",
-    label: "Fin TS",
-    format: (value) => value.toFixed(2),
   },
   {
     id: "total_price",
@@ -96,8 +86,6 @@ export default function StickyHeadTable() {
     let dataRows =  all.data.map((res) => {
       let date_format = new Date().toLocaleDateString('en-US');
       res.payment_date = date_format;
-      res.ts_created = date_format;
-      res.ts_updated = date_format;
       res.start_date = date_format;
       res.end_date = date_format;
       res.room_number = res.rooms.map((room) => room.room_number).join(",");
