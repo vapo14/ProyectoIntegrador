@@ -9,7 +9,6 @@ const RoomModel = require('../models/RoomModel');
 const getAllReservations = async (req, res) => {
   try {
     let response = await ReservationModel.find();
-
     const newReservations = []
     for (const reservation of response) {
       const rooms = await RoomModel.find({ '_id':{ $in: reservation.rooms }})
