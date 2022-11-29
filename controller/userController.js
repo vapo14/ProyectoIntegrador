@@ -18,6 +18,7 @@ const createUser = async (req, res) => {
     // create new user object based on mongoose user schema
     let newUser = new userModel({
       username: req.body.username,
+      fullname: req.body.fullname,
       password: hashedPassword,
       roleType: req.body.roleType,
     });
@@ -40,7 +41,12 @@ const createUser = async (req, res) => {
  * @returns userID
  */
 const loginUser = (req, res) => {
-  return res.json({ username: req.user.username, userId: req.user._id });
+  try{
+    return res.json({ username: req.user.username, userId: req.user._id });
+  } catch (e) {
+    return res.status(500).send(e);
+  }
+  
 };
 
 const getUserRoles = async (req, res) => {
