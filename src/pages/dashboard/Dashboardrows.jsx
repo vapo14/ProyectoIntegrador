@@ -121,7 +121,6 @@ export default function StickyHeadTable() {
     );
   };
 
-  console.log("Estaa", Rows);
   useEffect(() => {
     getAllReservations();
   }, []);

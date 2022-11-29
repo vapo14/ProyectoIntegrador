@@ -4,6 +4,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import CreateRoom from './pages/room/CreateRoom';
 import BookingCalendar from "./pages/bookingCalendar/BookingCalendar";
 import Login from './pages/login/Login';
+import AddBokking from './pages/addBooking/AddBooking';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="calendar" element={<BookingCalendar />} />
+            <Route path="addBooking" element={<AddBokking />} />
           </Route>
         </Routes>
       </BrowserRouter>
