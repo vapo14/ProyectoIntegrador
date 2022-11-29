@@ -29,8 +29,6 @@ class ReservationRepository {
   }
 
   async create(
-    guest_id,
-    user_id,
     start_date,
     end_date,
     ts_created,
@@ -43,10 +41,8 @@ class ReservationRepository {
     payment_date
   ) {
     return await this.dao.run(
-      "INSERT INTO Reservation (guest_id, user_id, start_date, end_date, ts_created, ts_updated, total_price, form_of_booking, company_name, number_of_adults, number_of_children, payment_date) VALUES (?, ?, ? ,?, ?, ?, ?, ? ,?, ?, ?, ?)",
+      "INSERT INTO Reservation (start_date, end_date, ts_created, ts_updated, total_price, form_of_booking, company_name, number_of_adults, number_of_children, payment_date) VALUES (? ,?, ?, ?, ?, ? ,?, ?, ?, ?)",
       [
-        guest_id,
-        user_id,
         start_date,
         end_date,
         ts_created,

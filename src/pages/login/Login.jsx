@@ -4,6 +4,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import "./login.scss";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../api/axiosInstance";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -37,6 +38,14 @@ const Login = () => {
     //     }
     //   }
     // );
+    const userInfo = {
+      username: username,
+      password: password,
+    };
+    let res = await axiosInstance.post("/login", userInfo)
+
+    console.log(res);
+
   };
 
   return (
@@ -68,7 +77,7 @@ const Login = () => {
                   id="password"
                 />
               </div>
-              <button className="loginButton" type="submit">
+              <button className="loginButton" type="button" onClick={handleLogin}>
                 Login
               </button>
             </form>
