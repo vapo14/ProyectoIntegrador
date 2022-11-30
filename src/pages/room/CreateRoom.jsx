@@ -16,11 +16,9 @@ const CreateRoom = () => {
       current_price: priceRef.current.value,
       jacuzzi: jacuzziRef.current.checked,
     };
-    console.table(room);
 
     try {
-      const response = await axiosInstance.post('/rooms/create', room);
-      console.log(response);
+      await axiosInstance.post('/rooms', room);
       clearInputs();
     } catch (err) {
       alert('No se pudo crear la habitacion...');
