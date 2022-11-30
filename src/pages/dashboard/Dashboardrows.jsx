@@ -12,23 +12,12 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
 
 const columns = [
-  { id: "guest_id", label: "Folio_Invitado" },
   { id: "user_id", label: "Folio_Usuario" },
-
+  { id: "guest_name", label: "Nombre" },
   { id: "start_date", label: "Check-In" },
-  { id: "full_name", label: "Nombre" },
   {
     id: "end_date",
     label: "Check-out",
-  },
-  {
-    id: "ts_created",
-    label: "Comienzo TS",
-  },
-  {
-    id: "ts_updated",
-    label: "Fin TS",
-    format: (value) => value.toFixed(2),
   },
   {
     id: "total_price",
@@ -87,41 +76,26 @@ export default function StickyHeadTable() {
     setPage(0);
   };
 
-  /*
-  function createData(guest_id, user_id, start_date, full_name, end_date, ts_created,ts_updated,total_price,form_of_booking,company_name,number_of_adults, number_of_children, payment_date,origin, room_number ) {
-
-    return { guest_id, user_id, start_date, full_name, end_date, ts_created,ts_updated,total_price,form_of_booking,company_name,number_of_adults, number_of_children, payment_date,origin, room_number};
-  }
-  
-  const rows = [
-    createData('1', '1', "02-10-2022", "Sebas S", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "32"),
-    createData('2', '2', "02-10-2022", "Victor P", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "10"),
-    createData('3', '3', "02-10-2022", "Eduardo A", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "3"),
-    createData('4', '4', "02-10-2022", "Cesar M", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "2"),
-    createData('5', '5', "02-10-2022", "Javier Sosa", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "5"),
-    createData('6', '6', "02-10-2022", "Sebas S", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "36"),
-    createData('7', '7', "02-10-2022", "Victor P", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "52"),
-    createData('8', '8', "02-10-2022", "Eduardo A", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "6"),
-    createData('9', '9', "02-10-2022", "Cesar M", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "22"),
-    createData('10', '10', "02-10-2022", "Javier Sosa", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "32"),
-  ];
-  */
-
   //coments
   const [Rows, setRows] = useState([]);
 
   const getAllReservations = async () => {
     let all = await axiosInstance.get("/reservations");
-    console.log(all);
+
+    
+    let dataRows =  all.data.map((res) => {
+      let date_format = new Date().toLocaleDateString('en-US');
+      res.payment_date = date_format;
+      res.start_date = date_format;
+      res.end_date = date_format;
+      res.room_number = res.rooms.map((room) => room.room_number).join(",");
+      return res;
+    })
     setRows(
-      all.data.map((res) => {
-        res.room_number = res.rooms.map((room) => room.room_number).join(",");
-        return res;
-      })
+      dataRows
     );
   };
 
-  console.log("Estaa", Rows);
   useEffect(() => {
     getAllReservations();
   }, []);

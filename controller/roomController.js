@@ -1,28 +1,22 @@
-const roomModel = require('../models/RoomModel');
+const RoomModel = require("../models/RoomModel");
 
 /**
- * creates the room using room info in request body
+ * Create rooms
  * @param {*} req
  * @param {*} res
  */
+
 const createRoom = async (req, res) => {
-  try {
-    // create new user object based on mongoose user schema
-    let newRoom = new roomModel({
-      room_number: req.body.room_number,
-      beds_type: req.body.beds_type,
-      current_price: req.body.current_price,
-      jacuzzi: req.body.jacuzzi,
-    });
-    // save the user, if error is presented send response accordingly
-    newRoom.save((err) => {
-      if (err) res.status(500).send(err);
-      return res.status(200).json({ status: 'ROOM_SAVED' });
-    });
-  } catch (e) {
-    // catch error and send response
-    return res.status(500).send(e);
-  }
+    try {
+        let roomData = req.body.room;
+        let newRoom = new RoomModel(roomData);
+        newRoom.save((err) => {
+            if (err) res.status(500).send(err);
+            return res.status(201).json({ status: "ROOM_SAVED" });
+          });
+    } catch (error) {
+        return res.status(500).json(error);
+    }
 };
 
-module.exports = { createRoom };
+module.exports = {createRoom};

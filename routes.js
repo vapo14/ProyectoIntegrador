@@ -1,13 +1,13 @@
 const {
   getAllReservations,
   createReservation,
-} = require('./controller/reservationController');
+} = require("./controller/reservationController");
+const { createRoom } = require("./controller/roomController");
 const {
   createUser,
   getUserRoles,
   loginUser,
 } = require('./controller/userController');
-const { createRoom } = require('./controller/roomController');
 const checkAuthenticated = require('./middleware/checkAuthenticated');
 const checkNotAuthenticated = require('./middleware/checkNotAuthenticated');
 const router = require('express').Router();
@@ -23,11 +23,11 @@ router.post(
   loginUser
 );
 
-// reservations routs
-router.get('/reservations', getAllReservations);
-router.post('/reservations/create', createReservation);
+// reservations routes
+router.get("/reservations", getAllReservations);
+router.post("/reservations/create", createReservation);
 
-// rooms routes
-router.post('/rooms/create', checkAuthenticated, createRoom);
+// room routes
+router.post("/rooms", createRoom);
 
 module.exports = router;

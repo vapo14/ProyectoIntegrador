@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema(
+const reservationSchema = new mongoose.Schema(
   {
     guest_name: {
       type: String,
@@ -50,9 +50,20 @@ const userSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    origin: {
+      type: String,
+      required: true,
+    },
+    rooms: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Rooms',
+        required: true,
+      },
+    ],
   },
-  { collection: "Reservations" }
+  { collection: 'Reservations' }
 );
-userSchema.set("versionKey", false);
+reservationSchema.set('versionKey', false);
 
-module.exports = mongoose.model("ReservationModel", userSchema);
+module.exports = mongoose.model('ReservationModel', reservationSchema);

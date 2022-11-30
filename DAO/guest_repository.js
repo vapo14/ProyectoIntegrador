@@ -15,10 +15,10 @@ class GuestRepository {
         return this.dao.run(sql)
     }
 
-    create(guest_id, full_name, origin) {
+    create(full_name, origin) {
         return this.dao.run(
-            'INSERT INTO Guest (guest_id, full_name, origin) VALUES (?, ?, ?)',
-            [guest_id, full_name, origin]
+            'INSERT INTO Guest (full_name, origin) VALUES (?, ?)',
+            [full_name, origin]
         )
     }
 
