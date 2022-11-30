@@ -9,7 +9,13 @@ const RoomModel = require('../models/RoomModel');
 const getAllReservations = async (req, res) => {
   try {
     let response = await ReservationModel.find();
-    return res.status(200).json(response);
+    const newReservations = []
+    for (const reservation of response) {
+      const rooms = await RoomModel.find({ '_id':{ $in: reservation.rooms }})
+      newReservations.push({ ...reservation._doc, rooms })
+    }
+
+    return res.status(200).json(newReservations);
   } catch (error) {
     return res.status(500).json(error);
   }
@@ -48,7 +54,7 @@ const createReservation = async (req, res) => {
     }
 
     let reservation = req.body.reservation;
-    let rightNow = new Date().toISOString();
+    let rightNow = new Date().toLocaleDateString('en-US');
     reservation.ts_created = rightNow;
     reservation.ts_updated = rightNow;
     reservation.rooms = roomsArray;
