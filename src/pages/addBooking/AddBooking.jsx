@@ -2,7 +2,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import "./addBooking.scss";
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { Button } from '@mui/material';
+import { Button, Select } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import axiosInstance from "../../api/axiosInstance";
 import React, { useState } from "react";
@@ -10,9 +10,9 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import { Link } from 'react-router-dom';
 import InputAdornment from '@mui/material/InputAdornment';
-import useAuth from '../../hooks/useAuth'; 
+import useAuth from '../../hooks/useAuth';
+import { MenuItem, InputLabel } from "@mui/material";
 
 const AddBooking = () => {
     const { UserData } = useAuth();
@@ -31,7 +31,7 @@ const AddBooking = () => {
     const [numberofchildren, setNumberofchildren] = useState("");
     const [paymentdate, setPaymentdate] = React.useState(dayjs());
 
-console.log(startdate);
+    console.log(startdate);
     const handleChange = (newValue) => {
         setStartdate(newValue);
     };
@@ -43,6 +43,7 @@ console.log(startdate);
     const handleChange5 = (newValue) => {
         setPaymentdate(newValue);
     };
+
 
 
     const createReservation = async (e) => {
@@ -69,8 +70,24 @@ console.log(startdate);
             reservation
         }
 
-        await axiosInstance.post("/reservations/create", reservation_data);
+        if (UserData.userId === "" || guestname === "" || origin === "" ||
+            startdate === "" || enddate === "" || totalprice === "" ||
+            formofbooking === "" || companyname === "" || numberofadults === "" ||
+            numberofchildren === "" || paymentdate === "" || room_numbers === "") {
+            alert('No se llenaron los campos correctamente, reservacion no creada');
+        } else {
+            try {
+                await axiosInstance.post("/reservations/create", reservation_data);
+                alert('Reservacion creada con exito');
+            } catch (err) {
+                alert('El numero de cuarto no es valido');
+                console.error(err);
+            }
+        }
+
     };
+
+
 
     const createCompleteReservation = async (e) => {
         createReservation();
@@ -104,8 +121,8 @@ console.log(startdate);
                                 className="horizontalTF"
                                 sx={{ background: "white" }}
                                 id="rooms"
-                                label="Numero de Cuartos"
-                                type="numero de cuartos"
+                                label="Numero de Cuarto"
+                                type="number"
                                 onChange={(e) => { setRooms(e.target.value) }}
                                 value={rooms}
                             />
@@ -165,79 +182,87 @@ console.log(startdate);
 
 
                         <div className="input_Anotherfield">
-                            <TextField
+                        <InputLabel id="demo-simple-select-label">Forma de Reserva</InputLabel>
+                            <Select
                                 className="whiteColor"
-                                sx={{ background: "white" }}
+                                sx={{ background: "white",width: '14em' }}
                                 id="form_of_booking"
                                 label="Forma de Reserva"
                                 type="forma de reserva"
                                 onChange={(e) => { setFormofbooking(e.target.value) }}
                                 value={formofbooking}
-                            />
-
-                            <TextField
-                                className="horizontalTF"
-                                sx={{ background: "white" }}
-                                id="company_name"
-                                label="Nombre_Compañía"
-                                type="nombre compañía"
-                                onChange={(e) => { setCompanyname(e.target.value) }}
-                                value={companyname}
-                            />
-                            <TextField
-                                className="horizontalTF"
-                                InputProps={{
-                                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                                }}
-                                sx={{ background: "white", width: '14em' }}
-                                id="total_price"
-                                label="Precio_Total"
-                                type="precio_total"
-                                onChange={(e) => { setTotalprice(e.target.value) }}
-                                value={totalprice}
-
-                            />
-
-                        </div>
+                            >
+                            <MenuItem value={"Online"}>Online</MenuItem>
+                            <MenuItem value={"Directamente"}>Directamente</MenuItem>
+                            <MenuItem value={"Agencia de Viajes"}>Agencia de Viajes</MenuItem>
+                            <MenuItem value={"Telefono"}>Telefono</MenuItem>
+                            <MenuItem value={"Otro"}>Otro</MenuItem>
+                            </Select>
 
 
-                        <div className="input_Anotherfield">
+                        <TextField
+                            className="horizontalTF"
+                            sx={{ background: "white" }}
+                            id="company_name"
+                            label="Nombre_Compañía"
+                            type="nombre compañía"
+                            onChange={(e) => { setCompanyname(e.target.value) }}
+                            value={companyname}
+                        />
+                        <TextField
+                            className="horizontalTF"
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                            }}
+                            sx={{ background: "white", width: '14em' }}
+                            id="total_price"
+                            label="Precio_Total"
+                            type="number"
+                            onChange={(e) => { setTotalprice(e.target.value) }}
+                            value={totalprice}
+
+                        />
+
+                    </div>
 
 
-                            <TextField
-                                className="whiteColor"
-                                sx={{ background: "white" }}
-                                id="number_of_children"
-                                label="Num_niños"
-                                type="num_niños"
-                                onChange={(e) => { setNumberofchildren(e.target.value) }}
-                                value={numberofchildren}
-                            />
+                    <div className="input_Anotherfield">
 
-                            <TextField
-                                className="horizontalTF"
-                                sx={{ background: "white" }}
-                                id="number_of_adults"
-                                label="Num_adultos"
-                                type="num_adultos"
-                                onChange={(e) => { setNumberofadults(e.target.value) }}
-                                value={numberofadults}
-                            />
 
-                        </div>
+                        <TextField
+                            className="whiteColor"
+                            sx={{ background: "white" }}
+                            id="number_of_children"
+                            label="Num_niños"
+                            type="number"
+                            onChange={(e) => { setNumberofchildren(e.target.value) }}
+                            value={numberofchildren}
+                        />
 
-                        <div className="createButton">
-                            <Button component={Link} to="/dashboard" variant="contained" onClick={createCompleteReservation} style={{ color: 'white', backgroundColor: 'purple', borderColor: 'purple' }} endIcon={<AddBoxIcon />}>
-                                Crear Reservación
-                            </Button>
-                        </div>
+                        <TextField
+                            className="horizontalTF"
+                            sx={{ background: "white" }}
+                            id="number_of_adults"
+                            label="Num_adultos"
+                            type="number"
+                            onChange={(e) => { setNumberofadults(e.target.value) }}
+                            value={numberofadults}
+                        />
 
-                    </LocalizationProvider>
-                </form>
+                    </div>
 
-            </div>
+                    <div className="createButton">
+                        <Button variant="contained" onClick={createCompleteReservation} style={{ color: 'white', backgroundColor: 'purple', borderColor: 'purple' }} endIcon={<AddBoxIcon />}>
+                            Crear Reservación
+                        </Button>
+                    </div>
+
+                </LocalizationProvider>
+            </form>
 
         </div>
+
+        </div >
     );
 }
 
