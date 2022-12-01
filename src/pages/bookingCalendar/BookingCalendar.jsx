@@ -65,9 +65,6 @@ export default function BookingCalendar() {
     return groups;
   };
 
-  console.log("Items", Reservations);
-  console.log(Groups);
-
   useEffect(() => {
     getAllReservations();
   }, []);
