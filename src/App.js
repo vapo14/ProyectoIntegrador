@@ -5,6 +5,7 @@ import CreateRoom from "./pages/room/CreateRoom";
 import BookingCalendar from "./pages/bookingCalendar/BookingCalendar";
 import Login from "./pages/login/Login";
 import AddBokking from "./pages/addBooking/AddBooking";
+import EditBooking from "./pages/editBooking/EditBooking";
 import RequireAuth from "./components/RequireAuth";
 import RequireNotAuth from "./components/RequireNotAuth";
 
@@ -25,6 +26,7 @@ function App() {
           element={
             <RequireAuth>
               <Routes>
+                <Route path="/editReservation/:id" element={<EditBooking />} />
                 <Route path="/crearHabitacion" element={<CreateRoom />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/dashboard" element={<Dashboard />} />

@@ -1,5 +1,7 @@
 const {
   getAllReservations,
+  getReservationById,
+  updateReservation,
   createReservation,
 } = require("./controller/reservationController");
 const { createRoom } = require("./controller/roomController");
@@ -27,6 +29,8 @@ router.delete("/logout", checkAuthenticated, logoutUser);
 
 // reservations routes
 router.get("/reservations", getAllReservations);
+router.get("/reservation", checkAuthenticated, getReservationById);
+router.put("/reservation", updateReservation);
 router.post("/reservations/create", createReservation);
 
 // room routes

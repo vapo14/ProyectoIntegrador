@@ -10,6 +10,9 @@ import TableRow from "@mui/material/TableRow";
 import "./dashboard.scss";
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
+import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
+
 
 const columns = [
   { id: "user_id", label: "Folio_Usuario" },
@@ -60,6 +63,11 @@ const columns = [
     id: "room_number",
     label: "Habitaciones",
     format: (value) => value.toFixed(2),
+  },
+
+  {
+    id: "options",
+    label: "Opciones",
   },
 ];
 
@@ -135,15 +143,23 @@ export default function StickyHeadTable() {
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.guestid}>
                   {columns.map((column) => {
                     const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === "number" ? (
-                          column.format(value)
-                        ) : (
-                          <span>{value}</span>
-                        )}
-                      </TableCell>
-                    );
+                    if (column.id === "options") {
+                      return (
+                        <Link to={`/editReservation/${row._id}`}>
+                          <Button variant="contained">Edit</Button>
+                        </Link>
+                      );
+                    } else {
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.format && typeof value === "number" ? (
+                            column.format(value)
+                          ) : (
+                            <span>{value}</span>
+                          )}
+                        </TableCell>
+                      );
+                    }
                   })}
                 </TableRow>
               );
