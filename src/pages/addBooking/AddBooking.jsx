@@ -11,29 +11,27 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-
+import useAuth from '../../hooks/useAuth'; 
 
 const AddBooking = () => {
+    const { UserData } = useAuth();
     //reservation_Table has
     const [rooms, setRooms] = useState("");
 
     const [guestname, setGuestName] = useState("");
     const [origin, setOrigin] = useState("");
 
-    const [startdate, setStartdate] = React.useState(dayjs('2022-02-10').format('DD-MM-YYYY'));
-    const [enddate, setEnddate] = React.useState(dayjs('2022-02-10').format('DD-MM-YYYY'));
+    const [startdate, setStartdate] = React.useState(dayjs());
+    const [enddate, setEnddate] = React.useState(dayjs());
     const [totalprice, setTotalprice] = useState("");
     const [formofbooking, setFormofbooking] = useState("");
     const [companyname, setCompanyname] = useState("");
     const [numberofadults, setNumberofadults] = useState("");
     const [numberofchildren, setNumberofchildren] = useState("");
-    const [paymentdate, setPaymentdate] = React.useState(dayjs('2022-02-10').format('DD-MM-YYYY'));
+    const [paymentdate, setPaymentdate] = React.useState(dayjs());
 
-
+console.log(startdate);
     const handleChange = (newValue) => {
         setStartdate(newValue);
     };
@@ -53,7 +51,7 @@ const AddBooking = () => {
         let room_numbers = rooms_array.map((roomStr) => parseInt(roomStr));
 
         const reservation = {
-            user_id: "637a8e6630c3283b2a45751e",
+            user_id: UserData.userId,
             guest_name: guestname,
             origin: origin,
             start_date: startdate,
