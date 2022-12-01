@@ -7,21 +7,23 @@ const {
   createUser,
   getUserRoles,
   loginUser,
-} = require('./controller/userController');
-const checkAuthenticated = require('./middleware/checkAuthenticated');
-const checkNotAuthenticated = require('./middleware/checkNotAuthenticated');
-const router = require('express').Router();
-const passport = require('passport');
+  logoutUser,
+} = require("./controller/userController");
+const checkAuthenticated = require("./middleware/checkAuthenticated");
+const checkNotAuthenticated = require("./middleware/checkNotAuthenticated");
+const router = require("express").Router();
+const passport = require("passport");
 
 // users routes
-router.post('/users', checkAuthenticated, createUser);
-router.get('/users/roles', checkAuthenticated, getUserRoles);
+router.post("/users", checkAuthenticated, createUser);
+router.get("/users/roles", checkAuthenticated, getUserRoles);
 router.post(
-  '/login',
+  "/login",
   checkNotAuthenticated,
-  passport.authenticate('local'),
+  passport.authenticate("local"),
   loginUser
 );
+router.delete("/logout", checkAuthenticated, logoutUser);
 
 // reservations routes
 router.get("/reservations", getAllReservations);
