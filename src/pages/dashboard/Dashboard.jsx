@@ -16,14 +16,14 @@ const Dashboard = () => {
             <div className="dashboardContainer">
                 <Navbar />
                 <div className="dashboardButtons">
-                    <Button className="nuevResButton" variant="outlined" style={{ color: 'purple', backgroundColor: 'white', borderColor: 'purple', fontFamily:"OpenSansBold" }} endIcon={<AutoAwesomeIcon />}>
+                    <Button className="nuevResButton" variant="outlined" style={{ color: '#CA5D26', backgroundColor: '#F5F5F5', borderColor: '#CA5D26', fontFamily:"OpenSansBold" }} endIcon={<AutoAwesomeIcon />}>
                         Nuevas Reservaciones
                     </Button>
-                    <Button variant="contained" component={Link} to="/addBooking" style={{ color: 'white', backgroundColor: 'purple', borderColor: 'purple' }} endIcon={<AddBoxIcon />}>
+                    <Button variant="contained" component={Link} to="/addBooking" style={{ color: '#F5F5F5', backgroundColor: '#CA5D26', borderColor: '#CA5D26' }} endIcon={<AddBoxIcon />}>
                         Añadir Reservacion
                     </Button>
                 </div>
-                <StickyHeadTable/>
+                <StickyHeadTable />
 
             </div>
         </div>

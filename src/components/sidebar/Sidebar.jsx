@@ -1,6 +1,9 @@
 import './sidebar.scss'
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import DashboardIcon from '@mui/icons-material/DashboardOutlined';
+import PersonAddIcon from '@mui/icons-material/PersonAddOutlined';
+import CalendarIcon from '@mui/icons-material/CalendarMonthOutlined';
+import RoomAddIcon from '@mui/icons-material/AddHomeOutlined';
+import logo from '../../assets/logo/La_Gloria_de_Calvillo.png'
 import { useNavigate } from "react-router-dom"
 
 const Sidebar = () => {
@@ -14,9 +17,10 @@ const Sidebar = () => {
     return (
         <div className='sidebar'>
             <div className='top'>
-                <span className='logo'>La Gloria de Calvillo</span>
+                <span className='logo'>
+                    <img src={logo} />
+                </span>
             </div>
-            <hr />
             <div className='center'>
                 <ul>
                     <li onClick={() => changePage("/dashboard")}>
@@ -27,11 +31,13 @@ const Sidebar = () => {
                         <PersonAddIcon  className='icon'/>
                         <span>Registrar Usuario</span>
                     </li>
-                    <li onClick={() => changePage("/crearHabitacion")}>
-                        <span>Crear habitacion</span>
-                    </li>
                     <li onClick={() => changePage("/calendar")}>
+                        <CalendarIcon className='icon' />
                         <span>Calendario</span>
+                    </li>
+                    <li onClick={() => changePage("/crearHabitacion")}>
+                        <RoomAddIcon className='icon' />
+                        <span>Crear habitacion</span>
                     </li>
                 </ul>
             </div>

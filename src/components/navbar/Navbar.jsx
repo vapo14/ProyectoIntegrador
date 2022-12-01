@@ -7,8 +7,8 @@ const Navbar = () => {
       <div className="wrapper">
         <div className="user-greeting">Hola Usuario</div>
         <div className="search">
+          <SearchIcon className="icon" />
           <input type="text" placeholder="Buscar..." />
-          <SearchIcon />
         </div>
       </div>
     </div>

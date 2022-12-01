@@ -127,15 +127,15 @@ export default function StickyHeadTable() {
 
   //coments
   return (
-    <Paper sx={{ maxWidth: "100%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: 600 }}>
+    <Paper sx={{ maxWidth: 1500, overflow: "hidden" }}>
+      <TableContainer sx={{ maxHeight: 600}}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow
               sx={{
                 "& th": {
-                  color: "rgba(255, 255, 255)",
-                  backgroundColor: "purple",
+                  color: "#F5F5F5",
+                  backgroundColor: "#CA5D26",
                   fontFamily: "OpenSansBold",
                 },
               }}
