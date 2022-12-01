@@ -1,21 +1,31 @@
-const ReservationRepository = require("../DAO/reservation_repository");
-const AppDAO = require("../DAO/dao");
+const ReservationModel = require("../models/ReservationModel");
+const RoomModel = require("../models/RoomModel");
 
-const appDAO = new AppDAO("./database.sqlite3");
-const reservationRepo = new ReservationRepository(appDAO);
+const validateReservationRooms = async (reservation, room_numbers) => {
+  // pull the reservations that overlap with the current reservation
+  let overlappingReservations = await ReservationModel.find({
+    start_date: {
+      $gte: reservation.start_date,
+      $lte: reservation.end_date,
+    },
+    end_date: {
+      $gte: reservation.start_date,
+      $lte: reservation.end_date,
+    },
+  });
+  if (overlappingReservations.length <= 0) return true;
 
-/**
- * Gets all reservations and their reserved rooms.
- * @returns a list of reservations with rooms
- */
-const getAllReservationsWithRooms = async () => {
-  let reservations = await reservationRepo.getAll();
-  for (let i = 0; i < reservations.length; i++) {
-    reservations[i].rooms = await reservationRepo.getAllReservationRooms(
-      reservations[i].reservation_id
-    );
+  // check each room in each reservation that is overlapped
+  // if the same room is found then it is not valid
+  for (const res of overlappingReservations) {
+    for (const roomId of res.rooms) {
+      let tmpRoom = await RoomModel.findById(roomId);
+      if (room_numbers.includes(tmpRoom.room_number)) {
+        return false;
+      }
+    }
   }
-  return reservations;
+  return true;
 };
 
-module.exports = { getAllReservationsWithRooms };
+module.exports = { validateReservationRooms };
