@@ -3,6 +3,7 @@ const {
   getReservationById,
   updateReservation,
   createReservation,
+  deleteReservationById
 } = require("./controller/reservationController");
 const { createRoom } = require("./controller/roomController");
 const {
@@ -30,10 +31,11 @@ router.delete("/logout", checkAuthenticated, logoutUser);
 // reservations routes
 router.get("/reservations", getAllReservations);
 router.get("/reservation", checkAuthenticated, getReservationById);
-router.put("/reservation", updateReservation);
-router.post("/reservations/create", createReservation);
+router.put("/reservation", checkAuthenticated, updateReservation);
+router.post("/reservations/create", checkAuthenticated, createReservation);
+router.delete("/reservations/:reservationId", checkAuthenticated, deleteReservationById);
 
 // room routes
-router.post("/rooms", createRoom);
+router.post("/rooms", checkAuthenticated, createRoom);
 
 module.exports = router;

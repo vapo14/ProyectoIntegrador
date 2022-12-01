@@ -122,12 +122,20 @@ const createReservation = async (req, res) => {
 };
 
 /**
- * helper function to return room by its number
- * @param {*} roomNumber
- * @returns
+ * Deletes the reservation specified by the given id.
+ * @param {*} req 
+ * @param {*} res 
  */
-const getRoomsByRoomNumber = async (roomNumber) => {
-  return await RoomModel.findOne({ room_number: roomNumber });
-};
+const deleteReservationById = async (req, res) => {
+  try {
+    const reservationId = req.params.reservationId;
+    await ReservationModel.findByIdAndDelete(reservationId)
 
-module.exports = { getAllReservations, getReservationById, updateReservation, createReservation };
+    return res.status(200).json({ status: 'RESERVATION_DELETED' });
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+
+}
+
+module.exports = { getAllReservations, getReservationById, updateReservation, createReservation, deleteReservationById };
