@@ -57,4 +57,31 @@ const getUserRoles = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getUserRoles, loginUser };
+/**
+ * Logs out the user and clears session. Deletes cookie from client.
+ *
+ * @param {*} req
+ * @param {*} res
+ * @returns response with logged out message
+ */
+const logoutUser = (req, res) => {
+  // logout user using passport's interface
+  // TODO: fix logout bug
+  try {
+    req.session.destroy((err) => {
+      req.logOut((err) => {
+        if (err) console.error("Error logging out user ", err);
+      });
+      res.clearCookie("glor_s");
+      // Don't redirect, just print text
+      res.send("Logged out");
+    });
+  } catch {
+    res.status(200).json({
+      status:
+        "Server ran into an error when logging you out. To ensure security, please clear your browser cookies and close your browser.",
+    });
+  }
+};
+
+module.exports = { createUser, getUserRoles, loginUser, logoutUser };

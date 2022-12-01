@@ -13,21 +13,11 @@ import axiosInstance from "../../api/axiosInstance";
 
 const columns = [
   { id: "user_id", label: "Folio_Usuario" },
-
-  { id: "start_date", label: "Check-In" },
   { id: "guest_name", label: "Nombre" },
+  { id: "start_date", label: "Check-In" },
   {
     id: "end_date",
     label: "Check-out",
-  },
-  {
-    id: "ts_created",
-    label: "Comienzo TS",
-  },
-  {
-    id: "ts_updated",
-    label: "Fin TS",
-    format: (value) => value.toFixed(2),
   },
   {
     id: "total_price",
@@ -67,9 +57,9 @@ const columns = [
   },
 
   {
-    id: "rooms",
+    id: "room_number",
     label: "Habitaciones",
-    format: (value) => value.map((room) => room.room_number).join(','),
+    format: (value) => value.toFixed(2),
   },
 ];
 
@@ -91,8 +81,19 @@ export default function StickyHeadTable() {
 
   const getAllReservations = async () => {
     let all = await axiosInstance.get("/reservations");
-    console.log(all.data);
-    setRows(all.data);
+
+    
+    let dataRows =  all.data.map((res) => {
+      let date_format = new Date().toLocaleDateString('en-US');
+      res.payment_date = date_format;
+      res.start_date = date_format;
+      res.end_date = date_format;
+      res.room_number = res.rooms.map((room) => room.room_number).join(",");
+      return res;
+    })
+    setRows(
+      dataRows
+    );
   };
 
   useEffect(() => {
@@ -136,7 +137,7 @@ export default function StickyHeadTable() {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === "object" ? (
+                        {column.format && typeof value === "number" ? (
                           column.format(value)
                         ) : (
                           <span>{value}</span>

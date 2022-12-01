@@ -7,6 +7,7 @@ const {
   createUser,
   getUserRoles,
   loginUser,
+  logoutUser,
 } = require("./controller/userController");
 const checkAuthenticated = require("./middleware/checkAuthenticated");
 const checkNotAuthenticated = require("./middleware/checkNotAuthenticated");
@@ -22,6 +23,7 @@ router.post(
   passport.authenticate("local"),
   loginUser
 );
+router.delete("/logout", checkAuthenticated, logoutUser);
 
 // reservations routes
 router.get("/reservations", getAllReservations);
