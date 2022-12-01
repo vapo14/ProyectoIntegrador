@@ -1,9 +1,12 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { MenuItem, Select } from '@mui/material';
 import Sidebar from '../../components/sidebar/Sidebar';
 import axiosInstance from '../../api/axiosInstance';
 import './createRoom.scss';
+import { Link } from 'react-router-dom';
 
 const CreateRoom = () => {
+  const [status, setStatus] = useState('Seleccione una opcion');
   const roomNumRef = useRef();
   const bedAmountRef = useRef();
   const priceRef = useRef();
@@ -15,6 +18,7 @@ const CreateRoom = () => {
       beds_type: bedAmountRef.current.value,
       current_price: priceRef.current.value,
       jacuzzi: jacuzziRef.current.checked,
+      status: status,
     };
 
     try {
@@ -31,6 +35,7 @@ const CreateRoom = () => {
     bedAmountRef.current.value = '';
     priceRef.current.value = '';
     jacuzziRef.current.checked = false;
+    setStatus('Seleccione una opcion');
 
     alert('La habitación fue creada con éxito.');
   };
@@ -63,6 +68,28 @@ const CreateRoom = () => {
           id="bedAmount"
         />
 
+        <label className="label" htmlFor="status">
+          Estatus
+        </label>
+        <Select
+          sx={{ minWidth: '6em' }}
+          id="status"
+          onChange={(e) => {
+            setStatus(e.target.value);
+          }}
+          value={status}
+        >
+          <MenuItem value={'Ocupada'}>Ocupada</MenuItem>
+          <MenuItem value={'Reservada'}>Reservada</MenuItem>
+          <MenuItem value={'Disponible (limpia)'}>
+            Disponible {'('}limpia{')'}
+          </MenuItem>
+          <MenuItem value={'Disponible (sucia)'}>
+            Disponible {'('}sucia{')'}
+          </MenuItem>
+          <MenuItem value={'Mantenimiento'}>Mantenimiento</MenuItem>
+        </Select>
+
         <div className="masked-input-container">
           <label className="label" htmlFor="price">
             Precio
@@ -83,6 +110,8 @@ const CreateRoom = () => {
         <button className="submit-button" onClick={handleSubmit}>
           Crear Habitación
         </button>
+
+        <Link to="/rooms">Regresar</Link>
       </div>
     </div>
   );

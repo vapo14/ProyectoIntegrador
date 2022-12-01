@@ -19,4 +19,20 @@ const createRoom = async (req, res) => {
     }
 };
 
-module.exports = {createRoom};
+/**
+ * Get all rooms
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+const getAllRooms = async (req, res) => {
+    try {
+        const rooms = await RoomModel.find();
+
+        return res.status(200).json(rooms);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}
+
+module.exports = { createRoom, getAllRooms };
