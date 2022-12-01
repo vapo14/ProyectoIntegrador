@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import Sidebar from "../../components/sidebar/Sidebar";
 import moment from "moment";
+import "react-calendar-timeline/lib/Timeline.css";
 import "./calendar.css";
 import Timeline, {
   TimelineMarkers,
   TodayMarker,
 } from "react-calendar-timeline";
-import "react-calendar-timeline/lib/Timeline.css";
 import axiosInstance from "../../api/axiosInstance";
 import itemRenderer from "./ItemRenderer";
 
@@ -33,16 +33,17 @@ export default function BookingCalendar() {
     setGroups(groups);
     setReservations(
       all.data.map((res) => {
-        res.start_time = moment(res.start_date);
-        res.end_time = moment(res.end_date);
-        res.group = res.rooms.length > 0 ? res.rooms[0].room_number : 0;
-        res.title = "reservation";
-        res.key = res._id;
-        res.canMove = true;
-        res.canResize = false;
-        res.canChangeGroup = false;
-        res.className = "confirm";
-        return res;
+        let item = {};
+        item.start_time = moment(res.start_date);
+        item.end_time = moment(res.end_date);
+        item.group = res.rooms.length > 0 ? res.rooms[0].room_number : 0;
+        item.title = "reservation";
+        item.key = res._id;
+        item.canMove = true;
+        item.canResize = false;
+        item.canChangeGroup = false;
+        item.className = "confirm";
+        return item;
       })
     );
   };
@@ -50,13 +51,14 @@ export default function BookingCalendar() {
   const convertRoomsToGroups = (reservationsArray) => {
     let groups = [];
     let seenRooms = [];
-    let idx = 0;
     for (const res of reservationsArray) {
       for (const room of res.rooms) {
         if (!seenRooms.includes(room.room_number)) {
           seenRooms.push(room.room_number);
-          groups.push({ id: idx, title: `Room #${room.room_number}` });
-          idx++;
+          groups.push({
+            id: room.room_number,
+            title: `Room #${room.room_number}`,
+          });
         }
       }
     }

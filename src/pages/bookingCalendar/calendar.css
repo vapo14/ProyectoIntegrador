@@ -11,6 +11,10 @@
   border: dotted 1px deepskyblue;
 }
 
+.react-calendar-timeline .rct-header-root {
+  background-color: #4897d8;
+}
+
 .react-calendar-timeline .rct-horizontal-lines .rct-hl-even,
 .react-calendar-timeline .rct-horizontal-lines .rct-hl-odd {
   border-bottom: none;
@@ -102,31 +106,6 @@
 
 .pending {
   background-color: #fa6e59 !important;
-}
-
-.htmlCss {
-  background-color: #429970 !important;
-}
-
-.js1 {
-  background-color: #ffdb5c !important;
-  color: #000;
-}
-
-.js2 {
-  background-color: #fa6e59 !important;
-}
-
-.js3 {
-  background-color: #be59fa !important;
-}
-
-.nodejs {
-  background-color: #4897d8 !important;
-}
-
-.mySql {
-  background-color: #6d6d6d !important;
 }
 
 .react {
