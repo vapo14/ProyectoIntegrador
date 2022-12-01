@@ -22,6 +22,59 @@ const getAllReservations = async (req, res) => {
 };
 
 /**
+ * Gets the reservation by reservation id.
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+ const getReservationById = async (req, res) => {
+  try {
+    let reservation = await ReservationModel.findById(req.query.id);
+    const rooms = await RoomModel.find({ _id: { $in: reservation.rooms } });
+    reservation = { ...reservation._doc, rooms };
+    return res.status(200).json(reservation);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json(error);
+  }
+};
+
+/**
+ * Updates the reservation with the given id.
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+const updateReservation = async (req, res) => {
+  try {
+    let room_numbers = req.body.room_numbers;
+    console.log("req.body: ", req.body);
+    console.log("roomNumbers is:", room_numbers)
+    let roomsArray = [];
+    for (const room of room_numbers) {
+      let tmpRoom = await RoomModel.findOne({ room_number: room });
+      if (!tmpRoom) {
+        return res.status(400).json({
+          status: 'failed to create reservation',
+          message: `Room number ${room} was not found.`,
+        });
+      }
+      roomsArray.push(tmpRoom._id.toString());
+    }
+
+    let reservation = req.body.reservation;
+    reservation.rooms = roomsArray;
+
+    console.log("reservation: ", reservation);
+    let response = await ReservationModel.findByIdAndUpdate(req.query.id, reservation);
+    return res.status(200).json(response);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json(error);
+  }
+}
+
+/**
  * creates a new reservation
  * @param {*} req
  * @param {*} res
@@ -77,4 +130,4 @@ const getRoomsByRoomNumber = async (roomNumber) => {
   return await RoomModel.findOne({ room_number: roomNumber });
 };
 
-module.exports = { getAllReservations, createReservation };
+module.exports = { getAllReservations, getReservationById, updateReservation, createReservation };

@@ -1,22 +1,23 @@
 import Sidebar from "../../components/sidebar/Sidebar";
-import "./addBooking.scss";
+import "./editBooking.scss";
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { Button, Select, MenuItem, InputLabel } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import axiosInstance from "../../api/axiosInstance";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import { Link, useParams } from 'react-router-dom';
 import InputAdornment from '@mui/material/InputAdornment';
-import useAuth from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth'; 
 
-const AddBooking = () => {
+const EditBooking = () => {
     const { UserData } = useAuth();
     //reservation_Table has
-    const [rooms, setRooms] = useState("");
+    const [rooms, setRooms] = useState([]);
 
     const [guestname, setGuestName] = useState("");
     const [origin, setOrigin] = useState("");
@@ -29,8 +30,29 @@ const AddBooking = () => {
     const [numberofadults, setNumberofadults] = useState("");
     const [numberofchildren, setNumberofchildren] = useState("");
     const [paymentdate, setPaymentdate] = React.useState(dayjs());
+    const { id } = useParams();
 
-    console.log(startdate);
+    useEffect (() => {
+
+        const syncData = async() => {
+            let reservation = await axiosInstance.get("/reservation", { params: {id: id}});
+            console.log("reservation is:", reservation);
+            setGuestName(reservation.data.guest_name);
+            setRooms(reservation.data.rooms[0].room_number)
+            setOrigin(reservation.data.origin);
+            setStartdate(reservation.data.start_date);
+            setEnddate(reservation.data.end_date);
+            setPaymentdate(reservation.data.payment_date);
+            setFormofbooking(reservation.data.form_of_booking);
+            setCompanyname(reservation.data.company_name);
+            setTotalprice(reservation.data.total_price);
+            setNumberofadults(reservation.data.number_of_adults);
+            setNumberofchildren(reservation.data.number_of_children);
+        } 
+        syncData();
+        
+    }, []);
+
     const handleChange = (newValue) => {
         setStartdate(newValue);
     };
@@ -44,10 +66,19 @@ const AddBooking = () => {
     };
 
 
+    const updateReservation = async (e) => {
+        // if(typeof rooms === 'number') {
+        //     setRooms(rooms.toString());
+        // }
+        e.preventDefault();
+        console.log(typeof rooms);
+        let room = rooms;
+        if(typeof room === 'number') {
+            room = room.toString();
+        }
 
-    const createReservation = async (e) => {
-        console.log(rooms);
-        let rooms_array = rooms.split(',');
+
+        let rooms_array = room.split(',');
         let room_numbers = rooms_array.map((roomStr) => parseInt(roomStr));
 
         const reservation = {
@@ -75,21 +106,18 @@ const AddBooking = () => {
             numberofchildren === "" || paymentdate === "" || room_numbers === "") {
             alert('No se llenaron los campos correctamente, reservacion no creada');
         } else {
-            try {
-                await axiosInstance.post("/reservations/create", reservation_data);
-                alert('Reservacion creada con exito');
-            } catch (err) {
+            try{
+                await axiosInstance.put("/reservation", reservation_data, { params: {id: id}});
+                alert('Reservacion actualizada con exito');
+            } catch(err) {
                 alert('No se pudo actualizar la reservacion');
                 console.error(err);
             }
         }
-
     };
 
-
-
-    const createCompleteReservation = async (e) => {
-        createReservation();
+    const updateCompleteReservation = async (e) => {
+        updateReservation(e);
     }
 
     return (
@@ -99,7 +127,7 @@ const AddBooking = () => {
 
 
                 <Typography className="reservation" variant="h3" style={{ color: 'purple', borderColor: 'purple', fontFamily: "OpenSansBold", textDecoration: "underline", marginTop: "1em" }}>
-                    Nueva Reservación📝
+                    Actualizar Reservación📝
                 </Typography>
 
                 <form>
@@ -198,71 +226,70 @@ const AddBooking = () => {
                             <MenuItem value={"Otro"}>Otro</MenuItem>
                             </Select>
 
+                            <TextField
+                                className="horizontalTF"
+                                sx={{ background: "white" }}
+                                id="company_name"
+                                label="Nombre_Compañía"
+                                type="nombre compañía"
+                                onChange={(e) => { setCompanyname(e.target.value) }}
+                                value={companyname}
+                            />
+                            <TextField
+                                className="horizontalTF"
+                                InputProps={{
+                                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                }}
+                                sx={{ background: "white", width: '14em' }}
+                                id="total_price"
+                                label="Precio_Total"
+                                type="number"
+                                onChange={(e) => { setTotalprice(e.target.value) }}
+                                value={totalprice}
 
-                        <TextField
-                            className="horizontalTF"
-                            sx={{ background: "white" }}
-                            id="company_name"
-                            label="Nombre_Compañía"
-                            type="nombre compañía"
-                            onChange={(e) => { setCompanyname(e.target.value) }}
-                            value={companyname}
-                        />
-                        <TextField
-                            className="horizontalTF"
-                            InputProps={{
-                                startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                            }}
-                            sx={{ background: "white", width: '14em' }}
-                            id="total_price"
-                            label="Precio_Total"
-                            type="number"
-                            onChange={(e) => { setTotalprice(e.target.value) }}
-                            value={totalprice}
+                            />
 
-                        />
-
-                    </div>
-
-
-                    <div className="input_Anotherfield">
+                        </div>
 
 
-                        <TextField
-                            className="whiteColor"
-                            sx={{ background: "white" }}
-                            id="number_of_children"
-                            label="Num_niños"
-                            type="number"
-                            onChange={(e) => { setNumberofchildren(e.target.value) }}
-                            value={numberofchildren}
-                        />
+                        <div className="input_Anotherfield">
 
-                        <TextField
-                            className="horizontalTF"
-                            sx={{ background: "white" }}
-                            id="number_of_adults"
-                            label="Num_adultos"
-                            type="number"
-                            onChange={(e) => { setNumberofadults(e.target.value) }}
-                            value={numberofadults}
-                        />
 
-                    </div>
+                            <TextField
+                                className="whiteColor"
+                                sx={{ background: "white" }}
+                                id="number_of_children"
+                                label="Num_niños"
+                                type="number"
+                                onChange={(e) => { setNumberofchildren(e.target.value) }}
+                                value={numberofchildren}
+                            />
 
-                    <div className="createButton">
-                        <Button variant="contained" onClick={createCompleteReservation} style={{ color: 'white', backgroundColor: 'purple', borderColor: 'purple' }} endIcon={<AddBoxIcon />}>
-                            Crear Reservación
-                        </Button>
-                    </div>
+                            <TextField
+                                className="horizontalTF"
+                                sx={{ background: "white" }}
+                                id="number_of_adults"
+                                label="Num_adultos"
+                                type="number"
+                                onChange={(e) => { setNumberofadults(e.target.value) }}
+                                value={numberofadults}
+                            />
 
-                </LocalizationProvider>
-            </form>
+                        </div>
+
+                        <div className="createButton">
+                            <Button component={Link} to="/dashboard" variant="contained" onClick={updateCompleteReservation} style={{ color: 'white', backgroundColor: 'purple', borderColor: 'purple' }} endIcon={<AddBoxIcon />}>
+                                Actualizar Reservación
+                            </Button>
+                        </div>
+
+                    </LocalizationProvider>
+                </form>
+
+            </div>
 
         </div>
-
-        </div >
     );
 }
 
-export default AddBooking
+export default EditBooking
