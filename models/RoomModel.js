@@ -16,11 +16,11 @@ const roomSchema = new mongoose.Schema(
     },
     jacuzzi: {
       type: Boolean,
-      require: true,
+      required: true,
     },
   },
-  { collection: "Rooms" }
+  { collection: 'Rooms' }
 );
-roomSchema.set("versionKey", false);
+roomSchema.set('versionKey', false);
 
-module.exports = mongoose.model("RoomModel", roomSchema);
+module.exports = mongoose.model('RoomModel', roomSchema);

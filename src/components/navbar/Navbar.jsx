@@ -1,15 +1,16 @@
 import "./navbar.scss";
-import SearchIcon from "@mui/icons-material/Search";
-
+import useAuth from "../../hooks/useAuth";
 const Navbar = () => {
+  const { UserData, authed } = useAuth();
+
+  if (!authed) {
+    return <div></div>;
+  }
+
   return (
     <div className="navbar">
       <div className="wrapper">
-        <div className="user-greeting">Hola Usuario</div>
-        <div className="search">
-          <input type="text" placeholder="Buscar..." />
-          <SearchIcon />
-        </div>
+        <div className="user-greeting">Hola {UserData.username}!</div>
       </div>
     </div>
   );

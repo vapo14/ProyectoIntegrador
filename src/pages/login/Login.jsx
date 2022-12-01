@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import bcrypt from "bcryptjs";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import "./login.scss";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,20 +24,18 @@ const Login = () => {
     }
   };
 
-  const handleLogin = async () => {
-    // let user = await send({ action: "GET_BY_USERNAME", username }, "user");
-    // bcrypt.compare(
-    //   password + user.password_salt,
-    //   user.password_hash,
-    //   function (err, res) {
-    //     if (res) {
-    //       navigate("/dashboard");
-    //       alert("Login Exitoso UwU");
-    //     } else {
-    //       alert("Login Fallido >x<");
-    //     }
-    //   }
-    // );
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    let credentials = {
+      username,
+      password,
+    };
+    const data = await login(credentials);
+    if (data !== "FAILED") {
+      navigate("/dashboard");
+    } else {
+      console.error("Error on login", data);
+    }
   };
 
   return (
