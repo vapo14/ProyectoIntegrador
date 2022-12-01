@@ -5,7 +5,7 @@ const {
   createReservation,
   deleteReservationById
 } = require("./controller/reservationController");
-const { createRoom } = require("./controller/roomController");
+const { createRoom, getAllRooms } = require("./controller/roomController");
 const {
   createUser,
   getUserRoles,
@@ -36,6 +36,7 @@ router.post("/reservations/create", checkAuthenticated, createReservation);
 router.delete("/reservations/:reservationId", checkAuthenticated, deleteReservationById);
 
 // room routes
+router.get("/rooms", checkAuthenticated, getAllRooms);
 router.post("/rooms", checkAuthenticated, createRoom);
 
 module.exports = router;

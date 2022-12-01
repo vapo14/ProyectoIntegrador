@@ -3,6 +3,7 @@ import { MenuItem, Select } from '@mui/material';
 import Sidebar from '../../components/sidebar/Sidebar';
 import axiosInstance from '../../api/axiosInstance';
 import './createRoom.scss';
+import { Link } from 'react-router-dom';
 
 const CreateRoom = () => {
   const [status, setStatus] = useState('Seleccione una opcion');
@@ -109,6 +110,8 @@ const CreateRoom = () => {
         <button className="submit-button" onClick={handleSubmit}>
           Crear Habitación
         </button>
+
+        <Link to="/rooms">Regresar</Link>
       </div>
     </div>
   );
