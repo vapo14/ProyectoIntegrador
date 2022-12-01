@@ -14,6 +14,7 @@ import itemRenderer from "./ItemRenderer";
 export default function BookingCalendar() {
   const [Reservations, setReservations] = useState([]);
   const [Groups, setGroups] = useState([]);
+  let roomMap = [];
 
   // group
   //{ id: 1, title: 'group 1' }
@@ -32,16 +33,14 @@ export default function BookingCalendar() {
     let groups = convertRoomsToGroups(all.data);
     setGroups(groups);
     setReservations(
-      all.data.map((res) => {
+      all.data.map((res, idx) => {
         let item = {};
+        item.id = idx;
         item.start_time = moment(res.start_date);
         item.end_time = moment(res.end_date);
-        item.group = res.rooms.length > 0 ? res.rooms[0].room_number : 0;
-        item.title = "reservation";
-        item.key = res._id;
-        item.canMove = true;
-        item.canResize = false;
-        item.canChangeGroup = false;
+        item.group = roomMap.indexOf(res.rooms[0].room_number);
+        item.title = res.guest_name;
+        item.key = idx;
         item.className = "confirm";
         return item;
       })
@@ -56,19 +55,22 @@ export default function BookingCalendar() {
         if (!seenRooms.includes(room.room_number)) {
           seenRooms.push(room.room_number);
           groups.push({
-            id: room.room_number,
+            id: seenRooms.length - 1,
             title: `Room #${room.room_number}`,
           });
         }
       }
     }
+    roomMap = seenRooms;
     return groups;
   };
+
+  console.log("Items", Reservations);
+  console.log(Groups);
 
   useEffect(() => {
     getAllReservations();
   }, []);
-  console.log(Groups);
 
   return (
     <div className="calendar">
@@ -82,8 +84,8 @@ export default function BookingCalendar() {
               items={Reservations}
               lineHeight={75}
               itemRenderer={itemRenderer}
-              defaultTimeStart={moment().add("days", -10)}
-              defaultTimeEnd={moment().add("days", 10)}
+              defaultTimeStart={moment().add(-10, "days")}
+              defaultTimeEnd={moment().add(10, "days")}
               maxZoom={1.5 * 365.24 * 86400 * 1000}
               minZoom={1.24 * 86400 * 1000 * 7 * 3}
               fullUpdate
