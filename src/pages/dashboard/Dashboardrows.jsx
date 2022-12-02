@@ -146,8 +146,8 @@ export default function StickyHeadTable() {
               <TableRow
                 sx={{
                   "& th": {
-                    color: "rgba(255, 255, 255)",
-                    backgroundColor: "purple",
+                    color: "#F5F5F5",
+                    backgroundColor: "#CA5D26",
                     fontFamily: "OpenSansBold",
                   },
                 }}

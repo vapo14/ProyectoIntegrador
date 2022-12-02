@@ -6,6 +6,7 @@ import "./register.scss";
 import axiosInstance from "../../api/axiosInstance";
 import { FormErrors } from "./FormErrors";
 
+
 const Register = () => {
   const [fullname, setFullname] = useState("");
   const [username, setUsername] = useState("");
@@ -115,12 +116,10 @@ const Register = () => {
       <Sidebar />
       <div className="registerContainer">
         <Navbar />
-        <div className="top">
-          <h1>Registar Nuevo Usuario</h1>
-        </div>
         <div className="bottom">
           <div className="form">
             <form>
+              <h1>Registrar</h1>
               <div className="formInput">
                 <label>Nombre completo</label>
                 <input
@@ -163,6 +162,7 @@ const Register = () => {
                   id="role"
                   value={userRole}
                   onChange={(e) => handleInputChange(e)}
+                  class="form-select"
                 >
                   <option value="admin">Administrador</option>
                   <option value="sys_admin">Administrador del Sistema</option>

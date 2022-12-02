@@ -1,20 +1,32 @@
 .dashboard {
+    background-color: #E7E8EA;
     display: flex;
     width: 100%;
-    background-color: thistle;
-    min-width: fit-content!important;
     .dashboardContainer {
+        width: 80%;
+        background-color: #E7E8EA;
         flex: 6;
-        padding: 0 3em;
+        padding-left: 3em;
+        padding-right: 3em;
     }
-}
 
-.dashboardButtons{
-   margin-left:20em;
-   margin-top: 8em;
-   margin-bottom: 2em;
-}
-
-.nuevResButton{
-    margin-right:10em !important;
+    .bottom {
+        margin-top: 8em;
+        margin-bottom: 2em;
+    }
+    
+    .dashboardButtons{
+        width: 250px;
+        height: 60px;
+        padding: 10px;
+        padding-bottom: 15px;
+        border: none;
+        background-color: #CA5D26;
+        box-shadow: 0px 4px 20px #DEB29B;
+        border-radius: 15px;
+        color: white;
+        font-family: 'OpenSansBold';
+        cursor: pointer;
+    }
+    
 }
