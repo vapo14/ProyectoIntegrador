@@ -94,13 +94,11 @@ const Register = () => {
       return;
     }
 
-    var passwordObj = GeneratePassword(password);
-
     const user = {
       username : username,
-      full_name : fullname,
-      password_hash : passwordObj.hash_password,
-      password_salt : passwordObj.salt,
+      fullname : fullname,
+      password : password,
+      roleType : userRole
     };
 
 
@@ -166,11 +164,12 @@ const Register = () => {
                   onChange={(e) => handleInputChange(e)}
                   class="form-select"
                 >
-                  <option value="Administrator">Administrador</option>
+                  <option value="admin">Administrador</option>
+                  <option value="sys_admin">Administrador del Sistema</option>
                   <option value="User">Usuario</option>
                 </select>
               </div>
-              <button onClick={handleSubmit} type="submit">
+              <button onClick={handleSubmit} type="button">
                 Registrar
               </button>
               <FormErrors formErrors={formErrors} />

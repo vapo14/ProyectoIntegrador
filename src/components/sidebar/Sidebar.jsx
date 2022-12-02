@@ -43,6 +43,12 @@ const Sidebar = () => {
             <PersonAddIcon className="icon" />
             <span>Registrar Usuario</span>
           </li>
+<<<<<<< HEAD
+=======
+          <li onClick={() => changePage("/rooms")}>
+            <span>Habitaciones</span>
+          </li>
+>>>>>>> dev
           <li onClick={() => changePage("/calendar")}>
             <CalendarIcon className='icon' />
             <span>Calendario</span>

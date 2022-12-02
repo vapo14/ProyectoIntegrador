@@ -18,6 +18,10 @@ const roomSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    status: {
+      type: String,
+      required: true
+    }
   },
   { collection: 'Rooms' }
 );

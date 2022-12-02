@@ -3,6 +3,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import "./login.scss";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../api/axiosInstance";
 import useAuth from "../../hooks/useAuth";
 import logo from '../../assets/logo/La_Gloria_de_Calvillo.png';
 
@@ -68,7 +69,7 @@ const Login = () => {
                   id="password"
                 />
               </div>
-              <button className="loginButton" type="submit">
+              <button className="loginButton" type="button" onClick={handleLogin}>
                 Login
               </button>
             </form>
