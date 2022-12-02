@@ -57,7 +57,7 @@ const Sidebar = () => {
           </li>
         </ul>
       </div>
-      <div className="bottom">
+      <div className="bottom_2">
         <li onClick={handleLogOut}>
             <LogoutIcon className='icon' />
             <span>Cerrar sesión</span>
