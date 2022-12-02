@@ -4,8 +4,8 @@ import PersonAddIcon from '@mui/icons-material/PersonAddOutlined';
 import CalendarIcon from '@mui/icons-material/CalendarMonthOutlined';
 import BedOutlinedIcon from '@mui/icons-material/BedOutlined';
 import AddBookingIcon from '@mui/icons-material/AddCircleOutline';
+import LogoutIcon from '@mui/icons-material/Logout';
 import logo from '../../assets/logo/La_Gloria_de_Calvillo.png';
-import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom"
 import useAuth from "../../hooks/useAuth";
 
@@ -58,9 +58,10 @@ const Sidebar = () => {
         </ul>
       </div>
       <div className="bottom">
-        <Button onClick={handleLogOut}>
-          Log Out
-        </Button>
+        <li onClick={handleLogOut}>
+            <LogoutIcon className='icon' />
+            <span>Cerrar sesión</span>
+          </li>
       </div>
     </div>
   );
