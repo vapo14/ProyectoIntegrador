@@ -18,29 +18,20 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 
 const AddBooking = () => {
-    //guest_Table has
-    const [fullname, setFullname] = useState("");
+    //reservation_Table has
+    const [rooms, setRooms] = useState("");
+
+    const [guestname, setGuestName] = useState("");
     const [origin, setOrigin] = useState("");
-    //room_Table has 
-    const [roomnumber, setRoomNumber] = useState("");
-    const [bedtypenumber, setBedTypeNumber] = useState("");
-    const [currentprice, setCurrentPrice] = useState("");
-    const [jacuzzi, setJacuzzi] = useState("");
-    //reservation_Table has 
+
     const [startdate, setStartdate] = React.useState(dayjs('2022-02-10').format('DD-MM-YYYY'));
-    const [enddate, setEnddate] = React.useState(dayjs('2022-02-10').format('DD-MM-YYYY') );
-    const [tscreated, setTscreated] = React.useState(dayjs('2022-02-10').format('DD-MM-YYYY') );
-    const [tsupdated, setTsupdated] = React.useState(dayjs('2022-02-10').format('DD-MM-YYYY') );
+    const [enddate, setEnddate] = React.useState(dayjs('2022-02-10').format('DD-MM-YYYY'));
     const [totalprice, setTotalprice] = useState("");
     const [formofbooking, setFormofbooking] = useState("");
     const [companyname, setCompanyname] = useState("");
     const [numberofadults, setNumberofadults] = useState("");
     const [numberofchildren, setNumberofchildren] = useState("");
-    const [paymentdate, setPaymentdate] = React.useState(dayjs('2022-02-10').format('DD-MM-YYYY') );
-
-    const handleChangeJacuzzi = (event) => {
-        setJacuzzi(event.target.value);
-    };
+    const [paymentdate, setPaymentdate] = React.useState(dayjs('2022-02-10').format('DD-MM-YYYY'));
 
 
     const handleChange = (newValue) => {
@@ -51,45 +42,22 @@ const AddBooking = () => {
         setEnddate(newValue);
     };
 
-
-    const handleChange3 = (newValue) => {
-        setTscreated(newValue);
-    };
-
-
-    const handleChange4 = (newValue) => {
-        setTsupdated(newValue);
-    };
-
-
     const handleChange5 = (newValue) => {
         setPaymentdate(newValue);
     };
 
-    const createGuest = async (e) => {
-        const guest = {
-            full_name: fullname,
-            origin: origin,
-        }
-        await axiosInstance.post("/guests", guest);
-    }
-
-    const createRoom = async (e) => {
-        const room = {
-            room_number: roomnumber,
-            beds_type_number: bedtypenumber,
-            current_price: currentprice,
-            jacuzzi: jacuzzi,
-        }
-        await axiosInstance.post("/rooms", room);
-    }
 
     const createReservation = async (e) => {
+        console.log(rooms);
+        let rooms_array = rooms.split(',');
+        let room_numbers = rooms_array.map((roomStr) => parseInt(roomStr));
+
         const reservation = {
+            user_id: "637a8e6630c3283b2a45751e",
+            guest_name: guestname,
+            origin: origin,
             start_date: startdate,
             end_date: enddate,
-            ts_created: tscreated,
-            ts_updated: tsupdated,
             total_price: totalprice,
             form_of_booking: formofbooking,
             company_name: companyname,
@@ -98,13 +66,15 @@ const AddBooking = () => {
             payment_date: paymentdate,
         };
 
-        await axiosInstance.post("/reservations/create", reservation);
+        const reservation_data = {
+            room_numbers,
+            reservation
+        }
 
+        await axiosInstance.post("/reservations/create", reservation_data);
     };
 
     const createCompleteReservation = async (e) => {
-        createGuest();
-        createRoom();
         createReservation();
     }
 
@@ -124,22 +94,22 @@ const AddBooking = () => {
                         <div className="input_Textfield">
                             <TextField
                                 sx={{ background: "white" }}
-                                id="full_name"
+                                id="guest_name"
                                 label="Nombre Completo"
                                 type="nombre completo"
-                                onChange={(e) => { setFullname(e.target.value) }}
-                                value={fullname}
+                                onChange={(e) => { setGuestName(e.target.value) }}
+                                value={guestname}
                             />
 
 
                             <TextField
                                 className="horizontalTF"
                                 sx={{ background: "white" }}
-                                id="room_number"
+                                id="rooms"
                                 label="Numero de Cuartos"
                                 type="numero de cuartos"
-                                onChange={(e) => { setRoomNumber(e.target.value) }}
-                                value={roomnumber}
+                                onChange={(e) => { setRooms(e.target.value) }}
+                                value={rooms}
                             />
 
                             <TextField
@@ -181,31 +151,40 @@ const AddBooking = () => {
                             />
 
                             <DesktopDatePicker
-                                inputFormat="DD-MM-YYYY"
                                 className="horizontalTF"
+                                inputFormat="DD-MM-YYYY"
                                 sx={{ background: "purple" }}
-                                id="ts_created"
-                                label="Comienzo TS"
-                                type="comienzo ts"
-                                onChange={handleChange3}
-                                value={tscreated}
+                                id="payment_date"
+                                label="Fecha_Pago"
+                                type="fecha_pago"
+                                onChange={handleChange5}
+                                value={paymentdate}
                                 renderInput={(params) => <TextField {...params} sx={{ width: '14em' }} />}
                             />
+
 
                         </div>
 
 
                         <div className="input_Anotherfield">
-                            <DesktopDatePicker
-                                inputFormat="DD-MM-YYYY"
+                            <TextField
                                 className="whiteColor"
                                 sx={{ background: "white" }}
-                                id="ts_updated"
-                                label="Fin TS"
-                                type="fin ts"
-                                onChange={handleChange4}
-                                value={tsupdated}
-                                renderInput={(params) => <TextField {...params} sx={{ width: '14em' }} />}
+                                id="form_of_booking"
+                                label="Forma de Reserva"
+                                type="forma de reserva"
+                                onChange={(e) => { setFormofbooking(e.target.value) }}
+                                value={formofbooking}
+                            />
+
+                            <TextField
+                                className="horizontalTF"
+                                sx={{ background: "white" }}
+                                id="company_name"
+                                label="Nombre_Compañía"
+                                type="nombre compañía"
+                                onChange={(e) => { setCompanyname(e.target.value) }}
+                                value={companyname}
                             />
                             <TextField
                                 className="horizontalTF"
@@ -220,29 +199,21 @@ const AddBooking = () => {
                                 value={totalprice}
 
                             />
-                            <TextField
-                                className="horizontalTF"
-                                sx={{ background: "white" }}
-                                id="form_of_booking"
-                                label="Forma de Reserva"
-                                type="forma de reserva"
-                                onChange={(e) => { setFormofbooking(e.target.value) }}
-                                value={formofbooking}
-                            />
-
-
 
                         </div>
 
 
                         <div className="input_Anotherfield">
+
+
                             <TextField
+                                className="whiteColor"
                                 sx={{ background: "white" }}
-                                id="company_name"
-                                label="Nombre_Compañía"
-                                type="nombre compañía"
-                                onChange={(e) => { setCompanyname(e.target.value) }}
-                                value={companyname}
+                                id="number_of_children"
+                                label="Num_niños"
+                                type="num_niños"
+                                onChange={(e) => { setNumberofchildren(e.target.value) }}
+                                value={numberofchildren}
                             />
 
                             <TextField
@@ -253,75 +224,6 @@ const AddBooking = () => {
                                 type="num_adultos"
                                 onChange={(e) => { setNumberofadults(e.target.value) }}
                                 value={numberofadults}
-                            />
-
-                            <TextField
-                                className="horizontalTF"
-                                sx={{ background: "white" }}
-                                id="number_of_children"
-                                label="Num_niños"
-                                type="num_niños"
-                                onChange={(e) => { setNumberofchildren(e.target.value) }}
-                                value={numberofchildren}
-                            />
-
-
-                        </div>
-
-
-                        <div className="input_Anotherfield">
-
-                        <InputLabel id="demo-simple-select-label">Jacuzzi</InputLabel>
-                            <Select
-                                className="whiteColor"
-                                sx={{ width: '14em' }}
-                                labelId="demo-simple-select-autowidth-label"
-                                id="jacuzzi"
-                                value={jacuzzi}
-                                onChange={handleChangeJacuzzi}
-                                autoWidth
-                                label="Jacuzzi"
-                            >
-                                <MenuItem value={"true"}>Si</MenuItem>
-                                <MenuItem value={"false"}>No</MenuItem>
-                            </Select>
-
-                            <DesktopDatePicker
-                            className="horizontalTF"
-                                inputFormat="DD-MM-YYYY"
-                                sx={{ background: "purple" }}
-                                id="payment_date"
-                                label="Fecha_Pago"
-                                type="fecha_pago"
-                                onChange={handleChange5}
-                                value={paymentdate}
-                                renderInput={(params) => <TextField {...params} sx={{ width: '14em' }} />}
-                            />
-
-                          
-
-                            <TextField
-                                className="horizontalTF"
-                                sx={{ background: "white" }}
-                                id="bed_type_number"
-                                label="Tipo de cama #"
-                                type="Tipodecama"
-                                onChange={(e) => { setBedTypeNumber(e.target.value) }}
-                                value={bedtypenumber}
-                            />
-                        </div>
-
-                        <div className="input_Anotherfield">
-                            <TextField
-                                InputProps={{
-                                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                                }}
-                                sx={{ background: "white", width: '14em' }}
-                                id="current_price"
-                                label="Precio Actual"
-                                type="precioactual"
-                                onChange={(e) => { setCurrentPrice(e.target.value) }}
-                                value={currentprice}
                             />
 
                         </div>
