@@ -2,7 +2,7 @@ import './sidebar.scss'
 import DashboardIcon from '@mui/icons-material/DashboardOutlined';
 import PersonAddIcon from '@mui/icons-material/PersonAddOutlined';
 import CalendarIcon from '@mui/icons-material/CalendarMonthOutlined';
-import RoomAddIcon from '@mui/icons-material/AddHomeOutlined';
+import BedOutlinedIcon from '@mui/icons-material/BedOutlined';
 import AddBookingIcon from '@mui/icons-material/AddCircleOutline';
 import logo from '../../assets/logo/La_Gloria_de_Calvillo.png';
 import Button from '@mui/material/Button';
@@ -43,12 +43,10 @@ const Sidebar = () => {
             <PersonAddIcon className="icon" />
             <span>Registrar Usuario</span>
           </li>
-<<<<<<< HEAD
-=======
           <li onClick={() => changePage("/rooms")}>
+            <BedOutlinedIcon className='icon' />
             <span>Habitaciones</span>
           </li>
->>>>>>> dev
           <li onClick={() => changePage("/calendar")}>
             <CalendarIcon className='icon' />
             <span>Calendario</span>
@@ -56,10 +54,6 @@ const Sidebar = () => {
           <li onClick={() => changePage("/addBooking")}>
             <AddBookingIcon className='icon' />
             <span>Crear reservación</span>
-          </li>
-          <li onClick={() => changePage("/crearHabitacion")}>
-            <RoomAddIcon className='icon' />
-            <span>Crear habitación</span>
           </li>
         </ul>
       </div>
