@@ -1,19 +1,21 @@
 import Sidebar from "../../components/sidebar/Sidebar";
-import "./addBooking.scss";
+import "./editBooking.scss";
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import axiosInstance from "../../api/axiosInstance";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import Navbar from "../../components/navbar/Navbar";
+import { useParams } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import Navbar from "../../components/navbar/Navbar";
 
-const AddBooking = () => {
+const EditBooking = () => {
     const { UserData } = useAuth();
     //reservation_Table has
-    const [rooms, setRooms] = useState("");
+    const [rooms, setRooms] = useState([]);
 
     const [guestname, setGuestName] = useState("");
     const [origin, setOrigin] = useState("");
@@ -26,6 +28,28 @@ const AddBooking = () => {
     const [numberofadults, setNumberofadults] = useState("");
     const [numberofchildren, setNumberofchildren] = useState("");
     const [paymentdate, setPaymentdate] = React.useState(dayjs());
+    const { id } = useParams();
+
+    useEffect (() => {
+
+        const syncData = async() => {
+            let reservation = await axiosInstance.get("/reservation", { params: {id: id}});
+            console.log("reservation is:", reservation);
+            setGuestName(reservation.data.guest_name);
+            setRooms(reservation.data.rooms[0].room_number)
+            setOrigin(reservation.data.origin);
+            setStartdate(reservation.data.start_date);
+            setEnddate(reservation.data.end_date);
+            setPaymentdate(reservation.data.payment_date);
+            setFormofbooking(reservation.data.form_of_booking);
+            setCompanyname(reservation.data.company_name);
+            setTotalprice(reservation.data.total_price);
+            setNumberofadults(reservation.data.number_of_adults);
+            setNumberofchildren(reservation.data.number_of_children);
+        } 
+        syncData();
+        
+    }, []);
 
     const handleChange = (newValue) => {
         setStartdate(newValue);
@@ -40,9 +64,19 @@ const AddBooking = () => {
     };
 
 
+    const updateReservation = async (e) => {
+        // if(typeof rooms === 'number') {
+        //     setRooms(rooms.toString());
+        // }
+        e.preventDefault();
+        console.log(typeof rooms);
+        let room = rooms;
+        if(typeof room === 'number') {
+            room = room.toString();
+        }
 
-    const createReservation = async (e) => {
-        let rooms_array = rooms.split(',');
+
+        let rooms_array = room.split(',');
         let room_numbers = rooms_array.map((roomStr) => parseInt(roomStr));
 
         const reservation = {
@@ -70,34 +104,31 @@ const AddBooking = () => {
             numberofchildren === "" || paymentdate === "" || room_numbers === "") {
             alert('No se llenaron los campos correctamente, reservacion no creada');
         } else {
-            try {
-                await axiosInstance.post("/reservations/create", reservation_data);
-                alert('Reservacion creada con exito');
-            } catch (err) {
+            try{
+                await axiosInstance.put("/reservation", reservation_data, { params: {id: id}});
+                alert('Reservacion actualizada con exito');
+            } catch(err) {
                 alert('No se pudo actualizar la reservacion');
                 console.error(err);
             }
         }
-
     };
 
-
-
-    const createCompleteReservation = async (e) => {
-        createReservation();
+    const updateCompleteReservation = async (e) => {
+        updateReservation(e);
     }
 
     return (
-        <div className="reservation">
+        <div className="editReservation">
             <Sidebar />
-            <div className="reservationContainer">
+            <div className="editReservationContainer">
                 <Navbar />
                 <div className="bottom">
                     <div className="form">
-                        <form>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <h1>Crear Reservación</h1>
-                                <div className="formInput">
+                    <form>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <h1>Editar Reservación</h1>
+                            <div className="formInput">
                                     <label>Nombre completo</label>
                                     <input
                                     type="text"
@@ -151,7 +182,6 @@ const AddBooking = () => {
                                 <div className="datePicker">
                                     <DesktopDatePicker
                                         inputFormat="DD-MM-YYYY"
-                                        className="whiteColor"
                                         sx={{ background: "purple" }}
                                         id="payment_date"
                                         label="Fecha de Pago"
@@ -208,17 +238,17 @@ const AddBooking = () => {
                                     />
                                 </div>
 
-                                <button class="submitButton"onClick={createCompleteReservation} type="button">
-                                    Crear Reservación
-                                </button>
+                            <button className="updateButton" onClick={updateCompleteReservation} type="button">
+                                Actualizar Reservación
+                            </button>
 
-                            </LocalizationProvider>
-                        </form>
+                        </LocalizationProvider>
+                    </form>
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }
 
-export default AddBooking;
+export default EditBooking

@@ -1,4 +1,8 @@
-//import * as React from 'react';
+import "./dashboard.scss";
+import React, { useEffect, useState } from "react";
+import axiosInstance from "../../api/axiosInstance";
+import { Link } from "react-router-dom";
+
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,28 +11,22 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import "./dashboard.scss";
-import React, { useEffect, useState } from "react";
-import axiosInstance from "../../api/axiosInstance";
+import IconButton from "@mui/material/IconButton"
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
+import { Grid } from "@mui/material";
+
 
 const columns = [
-  { id: "guest_id", label: "Folio_Invitado" },
   { id: "user_id", label: "Folio_Usuario" },
-
+  { id: "guest_name", label: "Nombre" },
   { id: "start_date", label: "Check-In" },
-  { id: "full_name", label: "Nombre" },
   {
     id: "end_date",
     label: "Check-out",
-  },
-  {
-    id: "ts_created",
-    label: "Comienzo TS",
-  },
-  {
-    id: "ts_updated",
-    label: "Fin TS",
-    format: (value) => value.toFixed(2),
   },
   {
     id: "total_price",
@@ -72,11 +70,18 @@ const columns = [
     label: "Habitaciones",
     format: (value) => value.toFixed(2),
   },
+
+  {
+    id: "options",
+    label: "Opciones",
+  },
 ];
 
 export default function StickyHeadTable() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedResId, setSelectedResId] = useState('');
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -87,37 +92,43 @@ export default function StickyHeadTable() {
     setPage(0);
   };
 
-  /*
-  function createData(guest_id, user_id, start_date, full_name, end_date, ts_created,ts_updated,total_price,form_of_booking,company_name,number_of_adults, number_of_children, payment_date,origin, room_number ) {
-
-    return { guest_id, user_id, start_date, full_name, end_date, ts_created,ts_updated,total_price,form_of_booking,company_name,number_of_adults, number_of_children, payment_date,origin, room_number};
+  const handleDeleteReservation = async () => {
+    const reservationId = selectedResId;
+    try {
+      await axiosInstance.delete(`/reservations/${reservationId}`);
+      alert('La reservacion se elimino con exito.');
+      setIsModalOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      alert('No se pudo eliminar la reservacion.');
+    }
   }
-  
-  const rows = [
-    createData('1', '1', "02-10-2022", "Sebas S", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "32"),
-    createData('2', '2', "02-10-2022", "Victor P", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "10"),
-    createData('3', '3', "02-10-2022", "Eduardo A", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "3"),
-    createData('4', '4', "02-10-2022", "Cesar M", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "2"),
-    createData('5', '5', "02-10-2022", "Javier Sosa", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "5"),
-    createData('6', '6', "02-10-2022", "Sebas S", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "36"),
-    createData('7', '7', "02-10-2022", "Victor P", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "52"),
-    createData('8', '8', "02-10-2022", "Eduardo A", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "6"),
-    createData('9', '9', "02-10-2022", "Cesar M", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "22"),
-    createData('10', '10', "02-10-2022", "Javier Sosa", "02-10-2022", "02-10-2022", "02-10-2022", 4000, "Booking", "Company Name", "3", "3","02-10-2022","Mexico", "32"),
-  ];
-  */
+
+  const handleOpenModal = (id) => {
+    setSelectedResId(id);
+    setIsModalOpen(true);
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  }
 
   //coments
   const [Rows, setRows] = useState([]);
 
   const getAllReservations = async () => {
     let all = await axiosInstance.get("/reservations");
-    console.log(all);
+    
+    let dataRows =  all.data.map((res) => {
+      res.payment_date = new Date(res.payment_date).toLocaleDateString('en-US');
+      res.start_date = new Date(res.start_date).toLocaleDateString('en-US');
+      res.end_date = new Date(res.end_date).toLocaleDateString('en-US');
+      res.room_number = res.rooms.map((room) => room.room_number).join(",");
+      return res;
+    })
     setRows(
-      all.data.map((res) => {
-        res.room_number = res.rooms.map((room) => room.room_number).join(",");
-        return res;
-      })
+      dataRows
     );
   };
 
@@ -127,66 +138,91 @@ export default function StickyHeadTable() {
 
   //coments
   return (
-    <Paper sx={{ maxWidth: "100%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: 600 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow
-              sx={{
-                "& th": {
-                  color: "rgba(255, 255, 255)",
-                  backgroundColor: "purple",
-                  fontFamily: "OpenSansBold",
-                },
-              }}
-            >
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody style={{ backgroundColor: "white" }}>
-            {Rows.slice(
-              page * rowsPerPage,
-              page * rowsPerPage + rowsPerPage
-            ).map((row) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.guestid}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === "number" ? (
-                          column.format(value)
-                        ) : (
-                          <span>{value}</span>
-                        )}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        style={{ backgroundColor: "whitesmoke" }}
-        rowsPerPageOptions={[5, 10, 15]}
-        labelRowsPerPage={"Filas por columna"}
-        component="div"
-        count={Rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+    <>
+      <Paper sx={{ maxWidth: "100%", overflow: "hidden" }}>
+        <TableContainer sx={{ maxHeight: 600 }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow
+                sx={{
+                  "& th": {
+                    color: "#F5F5F5",
+                    backgroundColor: "#CA5D26",
+                    fontFamily: "OpenSansBold",
+                  },
+                }}
+              >
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody style={{ backgroundColor: "white" }}>
+              {Rows.slice(
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              ).map((row) => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.guestid}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      if (column.id === "options") {
+                        return (
+                          <>
+                            <Link to={`/editReservation/${row._id}`}>
+                              <IconButton variant="contained" size="small"><EditIcon /></IconButton>
+                            </Link>
+                            <IconButton onClick={() => handleOpenModal(row._id)} variant="contained" size="small" color="error"><DeleteIcon /></IconButton>
+                          </>
+                        );
+                      } else {
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            {column.format && typeof value === "number" ? (
+                              column.format(value)
+                            ) : (
+                              <span>{value}</span>
+                            )}
+                          </TableCell>
+                        );
+                      }
+                    })}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          style={{ backgroundColor: "whitesmoke" }}
+          rowsPerPageOptions={[5, 10, 15]}
+          labelRowsPerPage={"Filas por columna"}
+          component="div"
+          count={Rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+      <Dialog onClose={handleCloseModal} open={isModalOpen}>
+        <DialogTitle>Eliminar Reservacion</DialogTitle>
+        <Grid container direction="column">
+          <span>¿Seguro que quieres eliminar la reservacion?</span>
+          <span style={{ color: 'red' }}>Esta operacion es permanente, por lo que la información se perderá.</span>
+
+          <Grid display="flex" justifyContent="space-evenly" >
+            <Button variant="contained" onClick={handleCloseModal}>Cancelar</Button>
+            <Button variant="contained" color="error" onClick={handleDeleteReservation}>Eliminar</Button>
+          </Grid>
+        </Grid>
+      </Dialog>
+    </>
   );
 }

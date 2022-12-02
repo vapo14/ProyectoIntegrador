@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import bcrypt from "bcryptjs";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import "./login.scss";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
+import useAuth from "../../hooks/useAuth";
+import logo from '../../assets/logo/La_Gloria_de_Calvillo.png';
 
 const Login = () => {
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -24,28 +26,18 @@ const Login = () => {
     }
   };
 
-  const handleLogin = async () => {
-    // let user = await send({ action: "GET_BY_USERNAME", username }, "user");
-    // bcrypt.compare(
-    //   password + user.password_salt,
-    //   user.password_hash,
-    //   function (err, res) {
-    //     if (res) {
-    //       navigate("/dashboard");
-    //       alert("Login Exitoso UwU");
-    //     } else {
-    //       alert("Login Fallido >x<");
-    //     }
-    //   }
-    // );
-    const userInfo = {
-      username: username,
-      password: password,
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    let credentials = {
+      username,
+      password,
     };
-    let res = await axiosInstance.post("/login", userInfo)
-
-    console.log(res);
-
+    const data = await login(credentials);
+    if (data !== "FAILED") {
+      navigate("/dashboard");
+    } else {
+      console.error("Error on login", data);
+    }
   };
 
   return (
@@ -53,11 +45,11 @@ const Login = () => {
       <Sidebar />
       <div className="loginContainer">
         <Navbar />
-        <div className="top">
-          <h1>Ingresar Usuario</h1>
-        </div>
         <div className="bottom">
           <div className="form">
+            <span className='logo'>
+              <img src={logo} />
+            </span>
             <form onSubmit={handleLogin}>
               <div className="formInput">
                 <label>Usuario</label>
