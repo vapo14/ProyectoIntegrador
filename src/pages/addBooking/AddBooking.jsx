@@ -27,7 +27,6 @@ const AddBooking = () => {
     const [numberofchildren, setNumberofchildren] = useState("");
     const [paymentdate, setPaymentdate] = React.useState(dayjs());
 
-    console.log(startdate);
     const handleChange = (newValue) => {
         setStartdate(newValue);
     };
@@ -43,7 +42,6 @@ const AddBooking = () => {
 
 
     const createReservation = async (e) => {
-        console.log(rooms);
         let rooms_array = rooms.split(',');
         let room_numbers = rooms_array.map((roomStr) => parseInt(roomStr));
 
