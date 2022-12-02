@@ -9,6 +9,7 @@ import Timeline, {
   TodayMarker,
 } from "react-calendar-timeline";
 import axiosInstance from "../../api/axiosInstance";
+import Navbar from "../../components/navbar/Navbar";
 import itemRenderer from "./ItemRenderer";
 
 export default function BookingCalendar() {
@@ -73,6 +74,7 @@ export default function BookingCalendar() {
     <div className="calendar">
       <Sidebar />
       <div className="calendarContainer">
+        <Navbar />
         <Container style={{ margin: "4rem" }}>
           <Row>
             <h1>Calendario</h1>
@@ -98,7 +100,7 @@ export default function BookingCalendar() {
                       style={{
                         ...styles,
                         width: "0.5rem",
-                        backgroundColor: "rgba(255,0,0,0.5)",
+                        backgroundColor: "#f44336",
                       }}
                     />
                   )}

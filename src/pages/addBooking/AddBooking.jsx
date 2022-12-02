@@ -122,7 +122,7 @@ const AddBooking = () => {
                                     onChange={(e) => { setOrigin(e.target.value) }}
                                     />
                                 </div>
-                                <div className="formInput">
+                                <div className="datePicker">
                                     <DesktopDatePicker
                                         inputFormat="DD-MM-YYYY"
                                         className="whiteColor"
@@ -135,7 +135,7 @@ const AddBooking = () => {
                                         renderInput={(params) => <TextField {...params} sx={{ width: '14em' }} />}
                                     />
                                 </div>
-                                <div className="formInput">
+                                <div className="datePicker">
                                     <DesktopDatePicker
                                         inputFormat="DD-MM-YYYY"
                                         className="whiteColor"
@@ -148,9 +148,10 @@ const AddBooking = () => {
                                         renderInput={(params) => <TextField {...params} sx={{ width: '14em' }} />}
                                     />
                                 </div>
-                                <div className="formInput">
+                                <div className="datePicker">
                                     <DesktopDatePicker
                                         inputFormat="DD-MM-YYYY"
+                                        className="whiteColor"
                                         sx={{ background: "purple" }}
                                         id="payment_date"
                                         label="Fecha de Pago"

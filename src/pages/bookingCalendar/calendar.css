@@ -7,21 +7,33 @@
   padding-left: 3em;
 }
 
+h1 {
+  font-size: 28px;
+  font-family: 'OpenSansBold';
+  text-align: center;
+  margin-bottom: 5%;
+}  
+
+
 .rct-item-content {
-  border: dotted 1px deepskyblue;
+  border: dotted 1px #CA5D26;
+  
 }
 
 .react-calendar-timeline .rct-header-root {
-  background-color: #4897d8;
+  background-color: #CA5D26;
+  border-radius: 8px;
 }
 
 .react-calendar-timeline .rct-horizontal-lines .rct-hl-even,
 .react-calendar-timeline .rct-horizontal-lines .rct-hl-odd {
   border-bottom: none;
+  border-radius: 8px;
 }
 
 .react-calendar-timeline .rct-horizontal-lines .rct-hl-even {
   background-color: #ffffff;
+  border-radius: 8px;
 }
 
 .react-calendar-timeline .rct-sidebar .rct-sidebar-row {
@@ -94,10 +106,11 @@
 .mySql,
 .react {
   color: #fff;
+  font-family: 'OpenSansBold';
 }
 
 .confirm {
-  background-color: #4897d8 !important;
+  background-color: #cd8e41 !important;
 }
 
 .assign {
