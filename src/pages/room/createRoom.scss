@@ -1,9 +1,11 @@
 .createRoom {
+  width: 100%;
   display: flex;
 
   .createRoomContainer {
     flex: 6;
-    padding: 3rem;
+    padding-left: 3em;
+    padding-right: 3em;
   }
 
   .title {

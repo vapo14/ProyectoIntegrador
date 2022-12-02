@@ -16,11 +16,8 @@ const Dashboard = () => {
             <div className="dashboardContainer">
                 <Navbar />
                 <div className="dashboardButtons">
-                    <Button className="nuevResButton" variant="outlined" style={{ color: '#CA5D26', backgroundColor: '#F5F5F5', borderColor: '#CA5D26', fontFamily:"OpenSansBold" }} endIcon={<AutoAwesomeIcon />}>
-                        Nuevas Reservaciones
-                    </Button>
                     <Button variant="contained" component={Link} to="/addBooking" style={{ color: '#F5F5F5', backgroundColor: '#CA5D26', borderColor: '#CA5D26' }} endIcon={<AddBoxIcon />}>
-                        Añadir Reservacion
+                        Crear Reservación
                     </Button>
                 </div>
                 <StickyHeadTable />

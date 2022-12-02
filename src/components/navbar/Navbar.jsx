@@ -1,5 +1,6 @@
 import "./navbar.scss";
 import useAuth from "../../hooks/useAuth";
+import SearchIcon from '@mui/icons-material/Search'
 const Navbar = () => {
   const { UserData, authed } = useAuth();
 

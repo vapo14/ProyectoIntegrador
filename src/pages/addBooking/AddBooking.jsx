@@ -15,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
+import Navbar from "../../components/navbar/Navbar";
 
 
 const AddBooking = () => {
@@ -82,163 +83,104 @@ const AddBooking = () => {
         <div className="dashboard">
             <Sidebar />
             <div className="dashboardContainer">
+                <Navbar />
+                <div className="bottom">
+                    <div className="form">
+                        <form>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+
+                                <div className="formInput">
+                                    <label>Nombre Completo</label>
+                                    <input onChange={(e) => { setGuestName(e.target.value) }} value={guestname} />
+                                </div>
+
+                                <div className="formInput">
+                                    <label>Numero de Cuartos</label>
+                                    <input onChange={(e) => { setRooms(e.target.value) }} value={rooms} />
+                                </div>
+                                <div className="formInput">
+                                    <label>Origen</label>
+                                    <input onChange={(e) => { setOrigin(e.target.value) }} value={origin} />
+                                </div>
 
 
-                <Typography className="reservation" variant="h3" style={{ color: 'purple', borderColor: 'purple', fontFamily: "OpenSansBold", textDecoration: "underline", marginTop: "1em" }}>
-                    Nueva Reservación📝
-                </Typography>
+                                <div className="formInput">
+                                    <label>Forma de Reserva</label>
+                                    <input onChange={(e) => { setFormofbooking(e.target.value) }} value={formofbooking} />
+                                </div>
+                                <div className="formInput">
+                                    <label>Nombre de Compañia</label>
+                                    <input onChange={(e) => { setCompanyname(e.target.value) }} value={companyname} />
+                                </div>
+                                <div className="formInput">
+                                    <label>Precio Total</label>
+                                    <input onChange={(e) => { setTotalprice(e.target.value) }} value={totalprice} />
+                                </div>
 
-                <form>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <div className="formInput">
+                                    <label>Numero de niños</label>
+                                    <input onChange={(e) => { setNumberofchildren(e.target.value) }} value={numberofchildren} />
+                                </div>
+                                <div className="formInput">
+                                    <label>Numero de adultos</label>
+                                    <input onChange={(e) => { setNumberofadults(e.target.value) }} value={numberofadults} />
 
-                        <div className="input_Textfield">
-                            <TextField
-                                sx={{ background: "white" }}
-                                id="guest_name"
-                                label="Nombre Completo"
-                                type="nombre completo"
-                                onChange={(e) => { setGuestName(e.target.value) }}
-                                value={guestname}
-                            />
+                                </div>
 
+                                <div className="formInput">
+                                    <DesktopDatePicker
+                                        inputFormat="DD-MM-YYYY"
+                                        className="whiteColor"
+                                        sx={{ background: "purple" }}
+                                        id="start_date"
+                                        label="Check-In"
+                                        type="check-in"
+                                        onChange={handleChange}
+                                        value={startdate}
+                                        renderInput={(params) => <TextField {...params} sx={{ width: '14em' }} />}
+                                    />
+                                </div>
 
-                            <TextField
-                                className="horizontalTF"
-                                sx={{ background: "white" }}
-                                id="rooms"
-                                label="Numero de Cuartos"
-                                type="numero de cuartos"
-                                onChange={(e) => { setRooms(e.target.value) }}
-                                value={rooms}
-                            />
+                                <div className="formInput">
+                                    <DesktopDatePicker
+                                        inputFormat="DD-MM-YYYY"
+                                        className="whiteColor"
+                                        sx={{ background: "purple" }}
+                                        id="end_date"
+                                        label="Check-out"
+                                        type="Check-out"
+                                        onChange={handleChange2}
+                                        value={enddate}
+                                        renderInput={(params) => <TextField {...params} sx={{ width: '14em' }} />}
+                                    />
+                                </div>
 
-                            <TextField
-                                className="horizontalTF"
-                                sx={{ background: "white" }}
-                                id="origin"
-                                label="Origen"
-                                type="origen"
-                                onChange={(e) => { setOrigin(e.target.value) }}
-                                value={origin}
-                            />
-                        </div>
+                                <div className="formInput">
+                                    <DesktopDatePicker
+                                        className="horizontalTF"
+                                        inputFormat="DD-MM-YYYY"
+                                        sx={{ background: "purple" }}
+                                        id="payment_date"
+                                        label="Fecha_Pago"
+                                        type="fecha_pago"
+                                        onChange={handleChange5}
+                                        value={paymentdate}
+                                        renderInput={(params) => <TextField {...params} sx={{ width: '14em' }} />}
+                                    />
 
+                                </div>
 
+                                <div className="formInput">
+                                    <Button component={Link} to="/dashboard" variant="contained" onClick={createCompleteReservation} style={{ color: 'white', backgroundColor: 'purple', borderColor: 'purple' }} endIcon={<AddBoxIcon />}>
+                                        Crear Reservación
+                                    </Button>
+                                </div>
 
-                        <div className="input_Anotherfield">
-                            <DesktopDatePicker
-                                inputFormat="DD-MM-YYYY"
-                                className="whiteColor"
-                                sx={{ background: "purple" }}
-                                id="start_date"
-                                label="Check-In"
-                                type="check-in"
-                                onChange={handleChange}
-                                value={startdate}
-                                renderInput={(params) => <TextField {...params} sx={{ width: '14em' }} />}
-                            />
-
-                            <DesktopDatePicker
-                                inputFormat="DD-MM-YYYY"
-                                className="horizontalTF"
-                                sx={{ background: "purple" }}
-                                id="end_date"
-                                label="Check-out"
-                                type="Check-out"
-                                onChange={handleChange2}
-                                value={enddate}
-                                renderInput={(params) => <TextField {...params} sx={{ width: '14em' }} />}
-                            />
-
-                            <DesktopDatePicker
-                                className="horizontalTF"
-                                inputFormat="DD-MM-YYYY"
-                                sx={{ background: "purple" }}
-                                id="payment_date"
-                                label="Fecha_Pago"
-                                type="fecha_pago"
-                                onChange={handleChange5}
-                                value={paymentdate}
-                                renderInput={(params) => <TextField {...params} sx={{ width: '14em' }} />}
-                            />
-
-
-                        </div>
-
-
-                        <div className="input_Anotherfield">
-                            <TextField
-                                className="whiteColor"
-                                sx={{ background: "white" }}
-                                id="form_of_booking"
-                                label="Forma de Reserva"
-                                type="forma de reserva"
-                                onChange={(e) => { setFormofbooking(e.target.value) }}
-                                value={formofbooking}
-                            />
-
-                            <TextField
-                                className="horizontalTF"
-                                sx={{ background: "white" }}
-                                id="company_name"
-                                label="Nombre_Compañía"
-                                type="nombre compañía"
-                                onChange={(e) => { setCompanyname(e.target.value) }}
-                                value={companyname}
-                            />
-                            <TextField
-                                className="horizontalTF"
-                                InputProps={{
-                                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                                }}
-                                sx={{ background: "white", width: '14em' }}
-                                id="total_price"
-                                label="Precio_Total"
-                                type="precio_total"
-                                onChange={(e) => { setTotalprice(e.target.value) }}
-                                value={totalprice}
-
-                            />
-
-                        </div>
-
-
-                        <div className="input_Anotherfield">
-
-
-                            <TextField
-                                className="whiteColor"
-                                sx={{ background: "white" }}
-                                id="number_of_children"
-                                label="Num_niños"
-                                type="num_niños"
-                                onChange={(e) => { setNumberofchildren(e.target.value) }}
-                                value={numberofchildren}
-                            />
-
-                            <TextField
-                                className="horizontalTF"
-                                sx={{ background: "white" }}
-                                id="number_of_adults"
-                                label="Num_adultos"
-                                type="num_adultos"
-                                onChange={(e) => { setNumberofadults(e.target.value) }}
-                                value={numberofadults}
-                            />
-
-                        </div>
-
-                        <div className="createButton">
-                            <Button component={Link} to="/dashboard" variant="contained" onClick={createCompleteReservation} style={{ color: 'white', backgroundColor: 'purple', borderColor: 'purple' }} endIcon={<AddBoxIcon />}>
-                                Crear Reservación
-                            </Button>
-                        </div>
-
-                    </LocalizationProvider>
-                </form>
-
-            </div>
-
+                            </LocalizationProvider>
+                        </form>
+                    </div>
+                </div>
+            </div>                                   
         </div>
     );
 }

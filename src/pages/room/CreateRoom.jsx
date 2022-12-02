@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import Sidebar from '../../components/sidebar/Sidebar';
+import Navbar from '../../components/navbar/Navbar';
 import axiosInstance from '../../api/axiosInstance';
 import './createRoom.scss';
 
@@ -39,7 +40,7 @@ const CreateRoom = () => {
     <div className="createRoom">
       <Sidebar />
       <div className="createRoomContainer">
-        <h1 className="title">Crear Habitación</h1>
+        <Navbar />
 
         <label className="label" htmlFor="roomNum">
           Numero de Habitación

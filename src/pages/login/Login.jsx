@@ -4,6 +4,7 @@ import Navbar from "../../components/navbar/Navbar";
 import "./login.scss";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import logo from '../../assets/logo/La_Gloria_de_Calvillo.png';
 
 const Login = () => {
   const { login } = useAuth();
@@ -43,11 +44,11 @@ const Login = () => {
       <Sidebar />
       <div className="loginContainer">
         <Navbar />
-        <div className="top">
-          <h1>Ingresar Usuario</h1>
-        </div>
         <div className="bottom">
           <div className="form">
+            <span className='logo'>
+              <img src={logo} />
+            </span>
             <form onSubmit={handleLogin}>
               <div className="formInput">
                 <label>Usuario</label>

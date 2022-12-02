@@ -1,29 +1,44 @@
-
+body {
+    background-color: #E7E8EA;
+    color: #2F313E;
+}
 .login {
-    width: 100%;
+    width: 50%;
     display: flex;
+    background-color: #E7E8EA;
+    margin-left: 25%;
+    margin-right: 25%;
+
+
+    .logo {
+        margin-left: 40px;
+        margin-top: 20px;
+    }
 
     .loginContainer {
         flex: 6;
+        border-radius: 50px;
+        height: 60vh;
+        min-height: 600px;
+        background-color: #F5F5F5;
+        justify-content: center;
+        align-self: center;
+        box-shadow: 0px 4px 40px rgba(40, 40, 40, 0.25);
+        margin-top: 10em;
 
         .top,
         .bottom {
-            -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
-            box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
             padding: 10px;
             margin: 20px;
             display: flex;
         }
 
-        h1 {
-            color: rgb(34, 34, 34);
-            font-size: 20px;
-        }
 
         form {
             flex: 1;
 
             .formInput {
+                border-radius: 50px;
                 width: 100%;
                 margin-top: 20px;
                 align-self: center;
@@ -37,8 +52,12 @@
                 }
 
                 input {
+                    border: solid #DEDEDE;
+                    color: #2F313E;
+                    border-radius: 50px;
                     width: 100%;
                     padding: 5px;
+                    padding-left: 15px;
                 }
             }
 
@@ -46,12 +65,15 @@
                 width: 150px;
                 padding: 10px;
                 border: none;
-                background-color: teal;
+                background-color: #CA5D26;
+                box-shadow: 0px 4px 20px #DEB29B;
+                border-radius: 15px;
                 color: white;
-                font-weight: bold;
+                font-family: 'OpenSansBold';
                 cursor: pointer;
-                margin-top: 40px;
+                margin-top: 50px;
                 margin-bottom: 20px;
+                margin-left: 35px;
             }
         }
 
